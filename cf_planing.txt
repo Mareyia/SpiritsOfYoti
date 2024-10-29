@@ -25,14 +25,14 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
   PLAY GAME
     
     SET UP:        
-      1 zitaei apo ton paiktei to onoma tou
-      2 pick a deck:
+      1 zitaei apo ton paiktei to onoma tou   COMPLETE
+      2 pick a deck:         COMPLETE        
         deixnei ta onomata ton trapoulon kai treis epiloges
           1 h mia trapoula
           2 h allh trapoula
           3 na de parousiastoun oi trapoules:
             parousouiasoi karton kathe trapoulas kai epistrofi stis epiloges pick a deck
-      3 dimiourgite ena object tou paiktei me ta parakato stixia tou pou epilexthikan parapano:
+      3 dimiourgite ena object tou paiktei me ta parakato stixia tou pou epilexthikan parapano: COMPLETE
         1 to onoma tou paiktei
         2 h trapoula pou epelekse
       4 anakatema trapoulas
