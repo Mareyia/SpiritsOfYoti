@@ -12,7 +12,7 @@ class Card:
   
   
 
-arxiko menou:         
+arxiko menou:    COMPLETE     
 ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epilogi girnaei piso sto simio epilogis
 
   treis epiloges:

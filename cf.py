@@ -45,3 +45,51 @@
 # https://en.wikipedia.org/wiki/Unmatched_(board_game) witch my hole project is based on
 #
 
+#import cf_classes, cf_functions, cf_list_dicts as cla, func, lidict
+import cf_functions as func
+
+
+func.main_menu()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
