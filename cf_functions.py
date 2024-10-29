@@ -1,3 +1,6 @@
+from cf_list_dicts import instructions, decks
+from cf_classes import Card, Player 
+
 # main_menu function for a terminal main menu giving you 3 options an looping on them until you press the exit option that breaks the loop 
 def main_menu():
 	menu = "" #variable for the selected option, the program just started so the '' corresponds to the choise still hasn't given
@@ -11,7 +14,7 @@ def main_menu():
 			print("\n--You entered '{}'-- wich is not a valid option.\nTry again:\nType '1' to start the game,\ntype '2' for instructions\n\nor type '0' to exit\n".format(menu)) 
 			menu = input("Type here: ")
 		if menu=='2':
-			print("\nshit\n")#print(lidict.instructions)
+			print(instructions)
 			to_continue()
 		elif menu=='1':
 			playGame()
@@ -29,3 +32,42 @@ def playGame():
 	print("Played!")
 	pass
 	
+
+# function that will get repeated for each plater, accepts the number corresponting to the current player
+def set_up(whos_turn):
+	#recive the name from the player
+	name = input("Player {} give me your name: ".format(whos_turn))
+	print("Hello {}!!!".format(name))
+	print("""\nNow pick a deck: 
+
+   'Firefly'    'Antblue'
+       1            2
+ 
+or 'l' to list every card on each deck
+""")
+	#recieve the choise of deck from the player 
+	deck_selection = input("Type here 1/2/l: ")
+	while deck_selection == 'l':
+		print(decks)
+		deck_selection = input("Type here 1/2/: ")
+	player_1 = Player(name, list(decks[list(decks.keys())[int(deck_selection)-1]]), list(decks.keys())[int(deck_selection)-1], whos_turn)
+		
+		
+	#randomize the deck
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

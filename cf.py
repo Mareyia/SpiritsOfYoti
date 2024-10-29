@@ -45,11 +45,24 @@
 # https://en.wikipedia.org/wiki/Unmatched_(board_game) witch my hole project is based on
 #
 
-#import cf_classes, cf_functions, cf_list_dicts as cla, func, lidict
+import cf_classes as cla
 import cf_functions as func
+import cf_list_dicts as lidict
 
 
-func.main_menu()
+#func.main_menu()
+func.set_up(1)
+
+test_card = cla.Card("Bullshit", "attack", 687)
+test_decks = lidict.decks
+
+#print(test_decks)
+#print(list(test_decks.keys())[0])
+#first_deck = test_decks[list(test_decks.keys())[0]]
+#value_of_f_deck = test_decks.keys()[first_deck]
+#print(first_deck)
+#print(value_of_f_deck)
+#print(test_decks[first_deck][0].name_of_card)
 
 
 
