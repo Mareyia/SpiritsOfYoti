@@ -1,1 +1,54 @@
+dedomena paixndiiou
+  dictionary = {sunolika 2 decks : [oles oi kartes mesa sto deck]}
+  to paixnidi einia gia duo atoma
+  ena variable gia odigies
+  oi kartes tha einai ena object
+  o kathe paixteis tha einai ena object
+  
+class Player:
+  
 
+class Card:
+  
+  
+
+arxiko menou:         
+ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epilogi girnaei piso sto simio epilogis
+
+  treis epiloges:
+    1 play game              ksekinaei to kyrio meros tou paixnidiou
+    2 instructions           deixnei odigies tou paixnidiou pou tha parousiazonte se mia etimi metbliti 
+    3 exit game              stamataei tin loupa
+    
+    
+    
+  PLAY GAME
+    
+    SET UP:        
+      1 zitaei apo ton paiktei to onoma tou
+      2 pick a deck:
+        deixnei ta onomata ton trapoulon kai treis epiloges
+          1 h mia trapoula
+          2 h allh trapoula
+          3 na de parousiastoun oi trapoules:
+            parousouiasoi karton kathe trapoulas kai epistrofi stis epiloges pick a deck
+      3 dimiourgite ena object tou paiktei me ta parakato stixia tou pou epilexthikan parapano:
+        1 to onoma tou paiktei
+        2 h trapoula pou epelekse
+      4 anakatema trapoulas
+      5 trabigma trion xartion sto xeri
+    
+    epenalipsi tou set up kai gia ton deutero paixti
+    
+    START:
+      1 turn:
+        elenxos katastaseius paixton (an exei teleiosei h trapoula) h (an exei kapoios pethanei)
+        zitaei apo tous paiktes na epileksoun kartes
+          1 zitaei apo ton antipalo paiktei na min koitaei tin othoni
+          2 deixei to xerei tou paixtei kai tou zitaei na epileksei miaa apo tis treis kartes
+          3 epanalipsei 1-2 gia ton allo paiktei
+      2 epanalipsei tou turn gia ton allo paixti
+      3 sunnexomenes epanalipseis mexrei o elenxos tis katastaseis na bgei alithinos 
+        otan sumbei auto:
+          o paixteis me thn perissoteri zoi kerdizei
+         
