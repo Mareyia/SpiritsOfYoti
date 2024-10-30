@@ -41,12 +41,14 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
     epenalipsi tou set up kai gia ton deutero paixti  COMPLETE
     
     START:
-      1 turn:
-        elenxos katastaseius paixton (an exei teleiosei h trapoula) h (an exei kapoios pethanei)
-        zitaei apo tous paiktes na epileksoun kartes
-          1 zitaei apo ton antipalo paiktei na min koitaei tin othoni
-          2 deixei to xerei tou paixtei kai tou zitaei na epileksei miaa apo tis treis kartes
-          3 epanalipsei 1-2 gia ton allo paiktei
+      1 turn:                       
+        1 elenxos katastaseius paixton (an exei teleiosei h trapoula) h (an exei kapoios pethanei)    COMPLETE
+          zitaei apo tous paiktes na epileksoun kartes
+            1 zitaei apo ton antipalo paiktei na min koitaei tin othoni
+            2 deixei to xerei tou paixtei kai tou zitaei na epileksei miaa apo tis treis kartes
+            3 epanalipsei 1-2 gia ton allo paiktei
+        2 replace leitourgia
+        3 maxei metaksi karton, to apotelesma tous tha alaksi ta dedomena ton paixton
       2 epanalipsei tou turn gia ton allo paixti
       3 sunnexomenes epanalipseis mexrei o elenxos tis katastaseis na bgei alithinos 
         otan sumbei auto:

@@ -62,6 +62,62 @@ or 'l' to list every card on each deck
 	return current_player
 
 
+def start_turn(current_player, enemy_player):
+	current_player.draw_cards()
+	enemy_player.draw_cards()
+	condition = current_player.check_status()
+	if condition:
+		print("{} died! {} YOU WIN!".format(current_player.player_name, enemy_player.player_name))
+		#return break				#with this the hole game needs to ends
+	card_selected_attacking, replacing = pick_a_card(current_player, enemy_player, True)
+	if replacing:
+		replace_card(card_selected_attacking)
+	else:
+		card_selected_defending, not_needed = pick_a_card(enemy_player, current_player, False)
+		fight(card_selected_attacking, card_selected_defending)
+
+def pick_a_card(current_player, enemy_player, initiative):
+	need_replacement = False				#on/of if the player wants to replace a card
+	print("{} is about to pick a card {} don't look!".format(current_player.player_name, enemy_player.player_name))
+	to_continue()
+	#initiative: checks to see if the current_player is in the attack
+	if initiative:
+		print("""\nNow pick a card: 
+
+		1:		{}
+		2:		{}
+		3:		{}
+
+or 'r' to replace card with one with your deck and end your turn deck
+""".format(current_player.hand[0], current_player.hand[1], current_player.hand[2]))
+		card_selection = input("Pick a/an card/option: 1/2/3/r: ")
+		if card_selection == 'r':
+			card_selection = input("Pick a card to replace: 1/2/3: ")
+			need_replacement = True
+	else:
+		print("\ncurrent hp: {}".format(current_player.hp))
+		print("""Now pick a card: 
+
+		1:		{}
+		2:		{}
+		3:		{}
+
+""".format(current_player.hand[0], current_player.hand[1], current_player.hand[2]))
+		card_selection = input("Pick a card: 1/2/3: ")
+		
+	card_selection = current_player.hand[int(card_selection) - 1]
+	if not need_replacement:
+		current_player.remove_card(card_selection)
+	return card_selection, need_replacement
+
+def replace_card(card_to_replace):
+	print("n\replaced: {}\n".format(card_to_replace))
+	pass
+	
+	
+def fight(attacking_card, defending_card):
+	print("\n{} vs {}\n".format(attacking_card, defending_card))
+	pass
 
 
 

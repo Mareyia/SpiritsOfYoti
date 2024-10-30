@@ -57,10 +57,15 @@ player_2 = func.set_up(2)
 
 
 
+func.start_turn(player_1, player_2)
+func.start_turn(player_2, player_1)
+func.start_turn(player_1, player_2)
+func.start_turn(player_2, player_1)
 
-
-
-
+#stop_test = input("\nLoop starting npress 0 to stop loop\n")
+#while stop_test != '0':
+#	func.start_turn(player_1, player_2)
+#	stop_test = input("\npress 0 to stop loop\n")
 
 
 
