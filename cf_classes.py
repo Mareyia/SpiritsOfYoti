@@ -19,27 +19,62 @@ class Card:
 			else:
 				card_representation = "stops all enemy attacks and abilities."
 		return "'{}' card of {}-type ".format(self.name_of_card, self.type_of_card.upper()) + card_representation
-		
-	def deal_damage(self, oppoments_card):
-		print("Using '{}' for {} damage!".format(self.name_of_card, self.ability_score))
-		return self.ability_score - oppoments_card.ability_score
-		
-	def block_damage(self, incoming_damge, owner_of_card):
-		print("Using '{}' to block {} damage!".format(self.name_of_card, self.ability_score))
-		if incoming_damge > 0:
-			owner_of_card.hp -= incoming_damge
-			print("Received {} damage!".format(incoming_damge))
-		else:
-			print("Blocked all the damage!")
 	
-	def activate_special(self, incoming_damge, owner_of_card):
-		if self.name_of_card == "Magical web":
-			print("Using '{}' countered all actions!".format(self.name_of_card))
-		else:
-			owner_of_card.hp -= incoming_damge
-			print("Received all {} damage!".format(incoming_damge))
-			owner_of_card.hp += self.ability_score
-			print("Using '{}' Heal back {} hp!".format(self.name_of_card, self.ability_score))
+	
+	def attacking(self, attacker, defender_card, defender_player):
+			#case a
+		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
+			print("{} used '{}' to deal {} damage! ---> {} used '{}' to block {} damage!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score))
+			damge_delt = self.ability_score - defender_card.ability_score
+			if damge_delt > 0:
+				new_defender_hp = defender_player.hp - damge_delt
+				if new_defender_hp < 0:
+					defender_player.hp = 0
+				else:
+					defender_player.hp = new_defender_hp
+				print("{} recieved {} damage! {} hp: {}".format(defender_player.player_name, damge_delt, defender_player.player_name, defender_player.hp))
+			else:
+				print("{} blocked all the damage!".format(defender_player.player_name))
+		#case b
+		elif defender_card.name_of_card == "Drinking ouiski":
+			print("{} used '{}' to deal {} damage! ---> but {} used '{}' to heal {} points!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score))
+			defender_player.hp -= self.ability_score
+			defender_player.hp += defender_card.ability_score
+			if defender_player.hp > 10:
+				defender_player.hp
+			print("{} recieved all the damage but healed imidietly after! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))			
+		#case c
+		else: #if .name_of_card == "Magical web"
+			print("{} used '{}' to deal {} damage! ---> {} used '{}' and nutrialized the attack!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
+	
+	def healing(self, attacker, defender_card, defender_player):
+			#case d
+		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
+			attacker.hp += self.ability_score
+			if attacker.hp > 10:
+				attacker.hp
+			print("{} used '{}' to heal {} points! ---> {} used '{}' to block, but there was nothing to block! {}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, attacker.player_name, attacker.hp))
+		#case e
+		elif defender_card.name_of_card == "Drinking ouiski":
+			attacker.hp += self.ability_score
+			defender_player.hp += defender_player.ability_score
+			if attacker.hp > 10:
+				attacker.hp
+			if defender_player.hp > 10:
+				defender_player.hp
+			print("{} used '{}' to heal {} points! ---> {} also used '{}' to {} points!\n{}'s hp: {}\n{}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score, attacker.player_name, attacker.hp, defender_player.player_name, defender_player))
+		#case c
+		else: #if .name_of_card == "Magical web"
+			print("{} used '{}' to heal {} points! ---> {} used '{}' and interupted the healing!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
+	
+	def canceling(self, attacker, defender_card, defender_player):
+			#case f
+		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander" or defender_card.name_of_card == "Drinking ouiski":
+			print("{} used '{}' to counter {}'s action ---> {} used '{}' but got countered!".format(attacker.player_name, self.name_of_card, defender_player.player_name, defender_player.player_name, defender_card.name_of_card))
+		#case g
+		else: #if .name_of_card == "Magical web"
+			print("Both players used '{}' and countered each other!".format(self.name_of_card))
+
 
 class Player:
 	def __init__(self, player_name, deck, deck_key, player_turn):

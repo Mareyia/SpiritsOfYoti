@@ -68,12 +68,12 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
           16 special(canceling) -> special(canceling)	g
           						
           a attacking --> blocking  COMPLETE
-          b attacking --> healing
-          c attacking/healing --> canceling
-          d healing --> blocking
-          e healing --> healing
-          f canceling --> attacking/healing/blocking
-          g canceling --> canceling
+          b attacking --> healing  COMPLETE
+          c attacking/healing --> canceling  COMPLETE
+          d healing --> blocking  COMPLETE
+          e healing --> healing  COMPLETE
+          f canceling --> healing/blocking COMPLETE
+          g canceling --> canceling  COMPLETE
           
           
           

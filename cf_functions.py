@@ -122,24 +122,10 @@ def replace_card(player_choosed_to_replace, card_to_replace):
 
 
 #CARDFIGHT! here is the function that applies the name of the game! The two card objects are getting compared and the result of the comparison modifies the player objects 
-def fight(attacking_player, attacking_card, defending_player, defending_card):
-	#case a
-	defending_card.block_damage(attacking_card.deal_damage(defending_card), defending_player)
-	
-	
-	
-	#print("\n{} vs {}\n".format(attacking_card, defending_card))
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
+def fight(attacking_player, attacking_card, defending_player, defending_card):	
+	if attacking_card.type_of_card == "attack" or attacking_card.type_of_card == "balander":
+		attacking_card.attacking(attacking_player, defending_card, defending_player)
+	elif attacking_card.name_of_card == "Drinking ouiski":
+		attacking_card.healing(attacking_player, defending_card, defending_player)
+	else: #if .name_of_card() == "Magical web"
+		attacking_card.canceling(attacking_player, defending_card, defending_player)
