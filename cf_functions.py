@@ -33,11 +33,11 @@ def playGame():
 	pass
 	
 
-# function that will get repeated for each plater, accepts the number corresponting to the current player
+# function that will get repeated for each plater, accepts the number corresponting to the current player and return a completed player object with randomized deck, name, hand and hp
 def set_up(whos_turn):
 	#recive the name from the player
-	name = input("Player {} give me your name: ".format(whos_turn))
-	print("Hello {}!!!".format(name))
+	name = input("\nPlayer {} how do you want to be called?: ".format(whos_turn))
+	print("\nHello {}!!!".format(name))
 	print("""\nNow pick a deck: 
 
    'Firefly'    'Antblue'
@@ -50,12 +50,16 @@ or 'l' to list every card on each deck
 	while deck_selection == 'l':
 		print(decks)
 		deck_selection = input("Type here 1/2/: ")
-	player_1 = Player(name, list(decks[list(decks.keys())[int(deck_selection)-1]]), list(decks.keys())[int(deck_selection)-1], whos_turn)
+	current_player =  Player(name, list(decks[list(decks.keys())[int(deck_selection)-1]]), list(decks.keys())[int(deck_selection)-1], whos_turn)
 		
 		
 	#randomize the deck
-
-
+	current_player.randomize()
+	
+	#draw 3 cards
+	current_player.draw_cards()
+	
+	return current_player
 
 
 

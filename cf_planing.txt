@@ -35,10 +35,10 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
       3 dimiourgite ena object tou paiktei me ta parakato stixia tou pou epilexthikan parapano: COMPLETE
         1 to onoma tou paiktei
         2 h trapoula pou epelekse
-      4 anakatema trapoulas
-      5 trabigma trion xartion sto xeri
+      4 anakatema trapoulas    COMPLETE
+      5 trabigma trion xartion sto xeri   COMPLETE
     
-    epenalipsi tou set up kai gia ton deutero paixti
+    epenalipsi tou set up kai gia ton deutero paixti  COMPLETE
     
     START:
       1 turn:

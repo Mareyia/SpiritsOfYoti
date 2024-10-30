@@ -51,18 +51,13 @@ import cf_list_dicts as lidict
 
 
 #func.main_menu()
-func.set_up(1)
+player_1 = func.set_up(1)
+player_2 = func.set_up(2)
 
-test_card = cla.Card("Bullshit", "attack", 687)
-test_decks = lidict.decks
 
-#print(test_decks)
-#print(list(test_decks.keys())[0])
-#first_deck = test_decks[list(test_decks.keys())[0]]
-#value_of_f_deck = test_decks.keys()[first_deck]
-#print(first_deck)
-#print(value_of_f_deck)
-#print(test_decks[first_deck][0].name_of_card)
+
+
+
 
 
 
