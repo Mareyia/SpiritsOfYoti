@@ -47,10 +47,10 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
             1 zitaei apo ton antipalo paiktei na min koitaei tin othoni
             2 deixei to xerei tou paixtei kai tou zitaei na epileksei miaa apo tis treis kartes
             3 epanalipsei 1-2 gia ton allo paiktei
-        2 replace leitourgia
+        2 replace leitourgia                                    COMPLETE
         3 maxei metaksi karton, to apotelesma tous tha alaksi ta dedomena ton paixton
-      2 epanalipsei tou turn gia ton allo paixti
-      3 sunnexomenes epanalipseis mexrei o elenxos tis katastaseis na bgei alithinos 
+      2 epanalipsei tou turn gia ton allo paixti                    COMPLETE
+      3 sunnexomenes epanalipseis mexrei o elenxos tis katastaseis na bgei alithinos     COMPLETE
         otan sumbei auto:
           o paixteis me thn perissoteri zoi kerdizei
          

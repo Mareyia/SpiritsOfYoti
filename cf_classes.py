@@ -19,6 +19,18 @@ class Card:
 			else:
 				card_representation = "stops all enemy attacks and abilities."
 		return "'{}' card of {}-type ".format(self.name_of_card, self.type_of_card) + card_representation
+		
+	def deal_damage(self, oppoments_card):
+		print("Using '{}' for {} damage!".format(self.name_of_card, self.ability_score))
+		return self.ability_score - oppoments_card.ability_score
+		
+	def block_damage(self, incoming_damge, owner_of_card):
+		print("Using '{}' to block {} damage!".format(self.name_of_card, self.ability_score))
+		if incoming_damge > 0:
+			owner_of_card.hp -= incoming_damge
+			print("Received {} damage!".format(incoming_damge))
+		else:
+			print("Blocked all the damage!")
 
 class Player:
 	def __init__(self, player_name, deck, deck_key, player_turn):

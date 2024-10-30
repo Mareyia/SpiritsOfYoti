@@ -45,28 +45,29 @@
 # https://en.wikipedia.org/wiki/Unmatched_(board_game) witch my hole project is based on
 #
 
-import cf_classes as cla
-import cf_functions as func
-import cf_list_dicts as lidict
+from cf_list_dicts import instructions
+from cf_functions import playGame
+from cf_functions import to_continue
 
 
-#func.main_menu()
-player_1 = func.set_up(1)
-player_2 = func.set_up(2)
-
-
-
-
-func.start_turn(player_1, player_2)
-func.start_turn(player_2, player_1)
-func.start_turn(player_1, player_2)
-func.start_turn(player_2, player_1)
-
-#stop_test = input("\nLoop starting npress 0 to stop loop\n")
-#while stop_test != '0':
-#	func.start_turn(player_1, player_2)
-#	stop_test = input("\npress 0 to stop loop\n")
-
+# A terminal main menu giving you 3 options and looping on them until you press the exit option that breaks the loop 
+menu = None #variable for the selected option, the program just started so the '' corresponds to the choise still hasn't given
+#the loop. the option 0 will break the loop aka to exit the game
+print("\n=========================================\n========= Welcome to Card fight =========\n=========================================")
+while menu!='0':
+	print("\n\tMain Menu\n")
+	print("Type '1' to start the game,\ntype '2' for instructions\n\nor type '0' to exit\n")
+	menu = input("Type here: ")
+	while menu not in ['0', '1', '2']:
+		print("\n--You entered '{}'-- wich is not a valid option.\nTry again:\nType '1' to start the game,\ntype '2' for instructions\n\nor type '0' to exit\n".format(menu)) 
+		menu = input("Type here: ")
+	if menu=='2':
+		print(instructions)
+		to_continue()
+	elif menu=='1':
+		playGame()
+	else:
+		print("Bye bye hope you had funnnn, or dont... I actually don't really care.")
 
 
 
