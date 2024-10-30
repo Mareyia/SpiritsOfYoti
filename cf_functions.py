@@ -123,8 +123,7 @@ def replace_card(player_choosed_to_replace, card_to_replace):
 
 #CARDFIGHT! here is the function that applies the name of the game! The two card objects are getting compared and the result of the comparison modifies the player objects 
 def fight(attacking_player, attacking_card, defending_player, defending_card):
-	#the situation in wich the defender doesn't have any cards to block with
-	#if defending_card.type_of_card == 
+	#case a
 	defending_card.block_damage(attacking_card.deal_damage(defending_card), defending_player)
 	
 	

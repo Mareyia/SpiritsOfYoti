@@ -18,7 +18,7 @@ class Card:
 				card_representation = "heals for {} hp.".format(self.ability_score)
 			else:
 				card_representation = "stops all enemy attacks and abilities."
-		return "'{}' card of {}-type ".format(self.name_of_card, self.type_of_card) + card_representation
+		return "'{}' card of {}-type ".format(self.name_of_card, self.type_of_card.upper()) + card_representation
 		
 	def deal_damage(self, oppoments_card):
 		print("Using '{}' for {} damage!".format(self.name_of_card, self.ability_score))
@@ -31,6 +31,15 @@ class Card:
 			print("Received {} damage!".format(incoming_damge))
 		else:
 			print("Blocked all the damage!")
+	
+	def activate_special(self, incoming_damge, owner_of_card):
+		if self.name_of_card == "Magical web":
+			print("Using '{}' countered all actions!".format(self.name_of_card))
+		else:
+			owner_of_card.hp -= incoming_damge
+			print("Received all {} damage!".format(incoming_damge))
+			owner_of_card.hp += self.ability_score
+			print("Using '{}' Heal back {} hp!".format(self.name_of_card, self.ability_score))
 
 class Player:
 	def __init__(self, player_name, deck, deck_key, player_turn):

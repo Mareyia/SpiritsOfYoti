@@ -8,10 +8,10 @@ light_block = Card("Power stance", "block", 1)
 heavy_block = Card("Dodje", "block", 3)
 
 light_balander = Card("Throwing rocks", "balander", 3)  
-heavy_balander = Card("shooting hertfull words", "balander", 4)
+heavy_balander = Card("Shooting hertfull words", "balander", 4)
 
 simple_special = Card("Drinking ouiski", "special", 3)
-special_special = Card("magical web", "special")     
+special_special = Card("Magical web", "special")     
 
 decks = {
 "Firefly":[light_attack, heavy_attack, ability_attack, ability_attack, light_block, light_block, light_balander, light_balander, light_balander, heavy_balander, heavy_balander, simple_special],

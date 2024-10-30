@@ -49,8 +49,37 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
             3 epanalipsei 1-2 gia ton allo paiktei
         2 replace leitourgia                                    COMPLETE
         3 maxei metaksi karton, to apotelesma tous tha alaksi ta dedomena ton paixton
+          oles oi periptoseis:				koina apotelesmata:
+          1 attack -> block				a
+          2 attack -> ballander				a
+          3 attack -> special(heal)			b
+          4 attack -> special(canceling)		c
+          5 ballander -> block				a
+          6 ballander -> ballander			a
+          7 ballander -> special(heal)			b
+          8 ballander -> special(canceling)		c
+          9 special(heal) -> block			d
+          10 special(heal) -> ballander			d
+          11 special(heal) -> special(heal)		e
+          12 special(heal) -> special(canceling)	c
+          13 special(canceling) -> block		f
+          14 special(canceling) -> ballander		f
+          15 special(canceling) -> special(heal)	f
+          16 special(canceling) -> special(canceling)	g
+          						
+          a attacking --> blocking  COMPLETE
+          b attacking --> healing
+          c attacking/healing --> canceling
+          d healing --> blocking
+          e healing --> healing
+          f canceling --> attacking/healing/blocking
+          g canceling --> canceling
+          
+          
+          
       2 epanalipsei tou turn gia ton allo paixti                    COMPLETE
       3 sunnexomenes epanalipseis mexrei o elenxos tis katastaseis na bgei alithinos     COMPLETE
         otan sumbei auto:
           o paixteis me thn perissoteri zoi kerdizei
          
+input safety measures         
