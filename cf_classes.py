@@ -40,43 +40,57 @@ class Card:
 			print("{} used '{}' to deal {} damage! ---> but {} used '{}' to heal {} points!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score))
 			defender_player.hp -= self.ability_score
 			defender_player.hp += defender_card.ability_score
-			if defender_player.hp > 10:
-				defender_player.hp
-			print("{} recieved all the damage but healed imidietly after! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))			
+			if defender_player.hp > Player.total_hp:
+				defender_player.hp = Player.total_hp
+			print("{} recieved all the damage but healed imidietly after! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))
 		#case c
-		else: #if .name_of_card == "Magical web"
+		elif defender_card.name_of_card == "Magical web":
 			print("{} used '{}' to deal {} damage! ---> {} used '{}' and nutrialized the attack!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
+		else: #no defender_card == None
+			print("{} used '{}' to deal {} damage! ---> {} had no available card!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name))
+			defender_player.hp -= self.ability_score
+			if defender_player.hp < 0:
+					defender_player.hp = 0
+			print("{} recieved all the damage! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))
 	
 	def healing(self, attacker, defender_card, defender_player):
 			#case d
 		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
 			attacker.hp += self.ability_score
-			if attacker.hp > 10:
-				attacker.hp
+			if attacker.hp > Player.total_hp:
+				attacker.hp = Player.total_hp
 			print("{} used '{}' to heal {} points! ---> {} used '{}' to block, but there was nothing to block! {}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, attacker.player_name, attacker.hp))
 		#case e
 		elif defender_card.name_of_card == "Drinking ouiski":
 			attacker.hp += self.ability_score
-			defender_player.hp += defender_player.ability_score
-			if attacker.hp > 10:
-				attacker.hp
-			if defender_player.hp > 10:
-				defender_player.hp
+			defender_player.hp += defender_card.ability_score
+			if attacker.hp > Player.total_hp:
+				attacker.hp = Player.total_hp
+			if defender_player.hp > Player.total_hp:
+				defender_player.hp = Player.total_hp
 			print("{} used '{}' to heal {} points! ---> {} also used '{}' to {} points!\n{}'s hp: {}\n{}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score, attacker.player_name, attacker.hp, defender_player.player_name, defender_player))
 		#case c
-		else: #if .name_of_card == "Magical web"
+		elif defender_card.name_of_card == "Magical web":
 			print("{} used '{}' to heal {} points! ---> {} used '{}' and interupted the healing!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
+		else: #no defender_card == None
+			attacker.hp += self.ability_score
+			if attacker.hp > Player.total_hp:
+				attacker.hp = Player.total_hp
+			print("{} used '{}' to heal {} points! ---> {} had no available card! {}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, attacker.player_name, attacker.hp))
 	
 	def canceling(self, attacker, defender_card, defender_player):
 			#case f
 		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander" or defender_card.name_of_card == "Drinking ouiski":
 			print("{} used '{}' to counter {}'s action ---> {} used '{}' but got countered!".format(attacker.player_name, self.name_of_card, defender_player.player_name, defender_player.player_name, defender_card.name_of_card))
 		#case g
-		else: #if .name_of_card == "Magical web"
+		elif defender_card.name_of_card == "Magical web":
 			print("Both players used '{}' and countered each other!".format(self.name_of_card))
+		else: #no defender_card == None
+			print("{} had no cards so {} used '{}' to counter nothing!".format(defender_player.player_name, attacker.player_name, self.name_of_card))
 
 
 class Player:
+	total_hp = 10
 	def __init__(self, player_name, deck, deck_key, player_turn):
 		self.player_name = player_name
 		#self.key to keep the key's name from the dictionary and self.deck for the actuall deck from the value *Possibility to do this by importing the dictionary directly from the file without the need of a second seperate class variable to hold the name maybe?
@@ -86,7 +100,7 @@ class Player:
 		self.player_turn = player_turn			#player1 or player2
 		self.ready_deck = []					#cards from the deck in random order 
 		self.hand = []							#the 3 available cards for the player to play
-		self.hp = 10
+		self.hp = self.total_hp
 	def __repr__(self):
 		return "Player {}, {} with '{}' deck.".format(self.player_turn, self.player_name, self.deck_key)
 	

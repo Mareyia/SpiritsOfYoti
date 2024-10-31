@@ -24,3 +24,5 @@ at
 the
 moment
 """
+#this string gets attached at the end of the print statement showing the cards 
+attacker_message = "\nor 'r' to replace card with one with your deck and end your turn deck"
