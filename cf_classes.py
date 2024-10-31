@@ -5,7 +5,7 @@ class Card:
 		self.name_of_card = name_of_card
 		self.type_of_card = type_of_card
 		self.ability_score = ability_score
-	
+
 	def __repr__(self):
 		if self.type_of_card == "attack":
 			card_representation = "deals {} damage.".format(self.ability_score)
@@ -19,8 +19,8 @@ class Card:
 			else:
 				card_representation = "stops all enemy attacks and abilities."
 		return "'{}' card of {}-type ".format(self.name_of_card, self.type_of_card.upper()) + card_representation
-	
-	
+
+
 	def attacking(self, attacker, defender_card, defender_player):
 			#case a
 		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
@@ -52,7 +52,7 @@ class Card:
 			if defender_player.hp < 0:
 					defender_player.hp = 0
 			print("{} recieved all the damage! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))
-	
+
 	def healing(self, attacker, defender_card, defender_player):
 			#case d
 		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
@@ -77,7 +77,7 @@ class Card:
 			if attacker.hp > Player.total_hp:
 				attacker.hp = Player.total_hp
 			print("{} used '{}' to heal {} points! ---> {} had no available card! {}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, attacker.player_name, attacker.hp))
-	
+
 	def canceling(self, attacker, defender_card, defender_player):
 			#case f
 		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander" or defender_card.name_of_card == "Drinking ouiski":
@@ -103,14 +103,14 @@ class Player:
 		self.hp = self.total_hp
 	def __repr__(self):
 		return "Player {}, {} with '{}' deck.".format(self.player_turn, self.player_name, self.deck_key)
-	
-	
+
+
 	# randomize is a method that uses the ordered self.deck to add its cards in random order inside the self.ready_deck list
 	def randomize(self):
 		while len(self.deck) > 0: 
 			random_index_of_card = randint(0, len(self.deck)-1)
 			self.ready_deck.append(self.deck.pop(random_index_of_card))
-			
+
 	# draw three cards to from the randomized deck available for pick
 	def draw_cards(self):
 		if (len(self.ready_deck)) > 0:
@@ -119,23 +119,25 @@ class Player:
 		# if the deck is empty, the player starts taking damge every turn
 		else:
 			self.hp -= 1
-		
+
 	def remove_card(self, card_selected_to_be_removed):
 		if len(self.hand) > 0:
 			self.hand.remove(card_selected_to_be_removed)
-	
-	
-	
+
+
+
 	#this check needs to be called after the self.hp is possible affected (possible affected from other functions that are changing its value in sertain conditions): draw_cards, 
 	def check_status(self):
+		is_dead = False
+		no_cards_left = False
+		if self.hp <= 0:
+			is_dead = True						#that means that the current player is dead
+			self.hp = 0
+		else:
+			if len(self.hand) == 0:
+				no_cards_left = True
 		print("""
 {}'s turn
 hp: {}
 cards left on deck: {}""".format(self.player_name, self.hp, len(self.ready_deck)))
-		if self.hp <= 0:
-			return True						#that means that the current player is dead
-		return False
-	
-	
-	
-	
+		return is_dead, no_cards_left

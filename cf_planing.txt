@@ -82,6 +82,6 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
         otan sumbei auto:
           o paixteis me thn perissoteri zoi kerdizei
          
-input safety measures
-situations when deck reach zero and hand starts to be less than 3       
-maybe mode to play against computer
+input safety measures							COMPLETE
+situations when deck reach zero and hand starts to be less than 3       COMPLETE
+(maybe mode to play against computer/andother miscalanius for appearence and easy of use)      NOTREQUIRED

@@ -62,12 +62,12 @@ while menu!='0':
 	print("\n\tMain Menu\n")
 	print("Type '1' to start the game,\ntype '2' for instructions\n\nor type '0' to exit\n")
 	menu = input("Type here: ")
-	
+
 	#safety measure wrong type
 	while menu not in ['0', '1', '2']:
 		print("--Wrong input--\nTry again:\n\nType '1' to start the game,\ntype '2' for instructions\n\nor type '0' to exit\n".format(menu)) 
 		menu = input("Type here: ")
-		
+
 	if menu=='2':
 		print(instructions)
 		to_continue()
@@ -75,42 +75,3 @@ while menu!='0':
 		playGame()
 	else:
 		print("Bye bye hope you had funnnn, or dont... I actually don't really care.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
