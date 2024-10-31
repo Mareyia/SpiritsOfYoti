@@ -115,7 +115,8 @@ def pick_a_card(current_player, enemy_player, initiative):
 	need_replacement = False				#on/of if the player wants to replace a card
 	print("{}{} is about to pick a card {} don't look!".format(ton_of_space, current_player.player_name, enemy_player.player_name))
 	to_continue()
-	display_hand_first, display_hand_second, valid_options_total, valid_options_no_r_first, = show_hand(current_player.hand, initiative)
+	#for#testing#print("{} is about to pick a card {} don't look!".format(current_player.player_name, enemy_player.player_name))
+	display_hand_first, display_hand_second, valid_options_total, valid_options_no_r_first, valid_options_no_r_second = show_hand(current_player.hand, initiative)
 	#valid_options_total for ssafety measure1 if the replacing option selected
 	#initiative: checks to see if the current_player is in the attack
 	if initiative:
@@ -155,9 +156,9 @@ def pick_a_card(current_player, enemy_player, initiative):
 	else:
 		print("current hp: {}".format(current_player.hp))
 		print(display_hand_second)
-		
+
 		#if there are no available cards to defend with
-		if current_player.hand[0].type_of_card == "attack" and current_player.hand[1].type_of_card == "attack" and current_player.hand[2].type_of_card == "attack":
+		if len(valid_options_no_r_second) == 0:
 			print("No available card to select")
 			card_selection = None
 			to_continue()
@@ -165,10 +166,10 @@ def pick_a_card(current_player, enemy_player, initiative):
 			card_selection = input("Pick a card here: ")
 
 			#safety measure1, if player types something wrong
-			#valid_options_total for safety measure1 
-			while card_selection not in valid_options_total:
+			#valid_options_no_r_second for safety measure2 
+			while card_selection not in valid_options_no_r_second:
 
-				#safety measure1, if player attemps to pick an invalid card
+				#safety measure2, if player attemps to pick an invalid card
 				if card_selection in valid_options_total:
 					if current_player.hand[int(card_selection) - 1].type_of_card == "attack":
 						print("Cannot play an attacking (ATTACK-type) card on your oponment's initiative")
@@ -217,13 +218,15 @@ def show_hand(players_hand, player_initiative):
 		print("\nYou are DEFENDING")
 	show_cards_1 = "Now pick a card:\n\n"
 	valid_options = []
-	valid_options_no_r = []
+	valid_options_no_r_1 = []
+	valid_options_no_r_2 = []
 	for i in range(len(players_hand)):
 		#creating these nessery lists to return for the pick_card's safety measures to work
 		valid_options.append(str(i+1))
 		if players_hand[i].type_of_card != "block":
-			valid_options_no_r.append(str(i+1))
-
+			valid_options_no_r_1.append(str(i+1))
+		if players_hand[i].type_of_card != "attack":
+			valid_options_no_r_2.append(str(i+1))
 		#costomising the print statement dependent on the number of cards on hand
 		show_cards_1 += "	{}:	{}\n".format(i+1, players_hand[i])
 	show_cards_1 += "\n"
@@ -232,4 +235,4 @@ def show_hand(players_hand, player_initiative):
 	#if the player is the attacking one there should be outputed an option for replace
 	show_cards_1 += attacker_message
 
-	return show_cards_1, show_cards_2, valid_options, valid_options_no_r
+	return show_cards_1, show_cards_2, valid_options, valid_options_no_r_1, valid_options_no_r_2
