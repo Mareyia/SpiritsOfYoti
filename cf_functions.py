@@ -30,22 +30,22 @@ def set_up(whos_turn, player_1st=None):
 		while name == player_1st:
 			name = input("player 1 already has this name, pick a difrent one: ")
 	print("\nHello {}!!!".format(name))
-	print("""\nNow pick a deck: 
 
-   'Firefly'    'Antblue'
-       1            2
+	#upgrade can now add more decks by just adding them on the cf_list_dicks
+	print("\nNow pick a deck\n")
+	for i in range(len(list(decks.keys()))):
+		print("	{}: '{}'".format(i+1, list(decks.keys())[i]))
+	print("\nor 'l' to list every card on each deck")
 
-or 'l' to list every card on each deck
-""")
 	#recieve the choise of deck from the player 
-	deck_selection = input("Type here 1/2/l: ")
-	while deck_selection not in ['1', '2']:
+	deck_selection = input("Type here: ")
+	while deck_selection not in [str(i+1) for i in range(len(list(decks.keys())))]:
 		if deck_selection == 'l':
 			for deck in decks:
 				print("\n\t'{}':".format(deck))
 				for card in decks[deck]:
 					print(card)
-			deck_selection = input("Type here 1/2/: ")
+			deck_selection = input("Type here: ")
 		else:
 			deck_selection = input("Invalid input, type again: ")
 	current_player =  Player(name, list(decks[list(decks.keys())[int(deck_selection)-1]]), list(decks.keys())[int(deck_selection)-1], whos_turn)
@@ -65,8 +65,11 @@ def start_turn(current_player, enemy_player):
 	current_player.draw_cards()
 	enemy_player.draw_cards()
 
+	to_continue()
+	print(ton_of_space)
 	#checks if any player reaced 0 hp so the game will end
 	condition, cards_finished = current_player.check_status()
+	to_continue()
 	if condition:
 		print("""\n\n{} died!
 
@@ -103,6 +106,7 @@ def start_turn(current_player, enemy_player):
 		else:
 			#if not replacing the other player has to pick a card too and the cards fight
 			card_selected_defending, not_needed = pick_a_card(enemy_player, current_player, False)
+			print(ton_of_space)
 			fight(current_player, card_selected_attacking, enemy_player, card_selected_defending)
 		return False
 
@@ -118,14 +122,14 @@ def pick_a_card(current_player, enemy_player, initiative):
 
 		#valid_options_no_r_first for ssafety measure2 
 		print(display_hand_first) #shows hand
-		card_selection = input("Pick a/an card/option: 1/2/3/r: ")
+		card_selection = input("Pick a/an card/option here: ")
 
 		#safety measure0, if player types something wrong or r
 		while card_selection not in valid_options_no_r_first:
 
 			#in case the player wants to replace a card
 			if card_selection == 'r':
-				card_selection = input("Pick a card to replace: 1/2/3: ")
+				card_selection = input("Pick a card to replace: ")
 				need_replacement = True
 			
 				#safety measure1, if player types something wrong
@@ -149,7 +153,7 @@ def pick_a_card(current_player, enemy_player, initiative):
 
 	#this function will continue with else when current player is the defending player 
 	else:
-		print("\ncurrent hp: {}".format(current_player.hp))
+		print("current hp: {}".format(current_player.hp))
 		print(display_hand_second)
 		
 		#if there are no available cards to defend with
@@ -158,7 +162,7 @@ def pick_a_card(current_player, enemy_player, initiative):
 			card_selection = None
 			to_continue()
 		else:
-			card_selection = input("Pick a card: 1/2/3: ")
+			card_selection = input("Pick a card here: ")
 
 			#safety measure1, if player types something wrong
 			#valid_options_total for safety measure1 
@@ -207,7 +211,11 @@ def fight(attacking_player, attacking_card, defending_player, defending_card):
 
 #show_hand customize the print statement, when its time to show the 3 hands of its player, depending on the players position(attacker, diffender) and player number of cards(in case deck is empty and hand is forced to be reduced lower than 3)
 def show_hand(players_hand, player_initiative):
-	show_cards_1 = "\nNow pick a card:\n\n"
+	if player_initiative:
+		print("\nYou are ATTACKING")
+	else:
+		print("\nYou are DEFENDING")
+	show_cards_1 = "Now pick a card:\n\n"
 	valid_options = []
 	valid_options_no_r = []
 	for i in range(len(players_hand)):

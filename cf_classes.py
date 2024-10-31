@@ -22,8 +22,14 @@ class Card:
 
 
 	def attacking(self, attacker, defender_card, defender_player):
-			#case a
-		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
+		if defender_card == None:
+			print("{} used '{}' to deal {} damage! ---> {} had no available card!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name))
+			defender_player.hp -= self.ability_score
+			if defender_player.hp < 0:
+					defender_player.hp = 0
+			print("{} recieved all the damage! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))
+		#case a
+		elif defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
 			print("{} used '{}' to deal {} damage! ---> {} used '{}' to block {} damage!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score))
 			damge_delt = self.ability_score - defender_card.ability_score
 			if damge_delt > 0:
@@ -46,16 +52,16 @@ class Card:
 		#case c
 		elif defender_card.name_of_card == "Magical web":
 			print("{} used '{}' to deal {} damage! ---> {} used '{}' and nutrialized the attack!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
-		else: #no defender_card == None
-			print("{} used '{}' to deal {} damage! ---> {} had no available card!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name))
-			defender_player.hp -= self.ability_score
-			if defender_player.hp < 0:
-					defender_player.hp = 0
-			print("{} recieved all the damage! {}'s hp: {}".format(defender_player.player_name, defender_player.player_name, defender_player.hp))
+
 
 	def healing(self, attacker, defender_card, defender_player):
-			#case d
-		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
+		if defender_card == None:
+			attacker.hp += self.ability_score
+			if attacker.hp > Player.total_hp:
+				attacker.hp = Player.total_hp
+			print("{} used '{}' to heal {} points! ---> {} had no available card! {}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, attacker.player_name, attacker.hp))
+		#case d
+		elif defender_card.type_of_card == "block" or defender_card.type_of_card == "balander":
 			attacker.hp += self.ability_score
 			if attacker.hp > Player.total_hp:
 				attacker.hp = Player.total_hp
@@ -72,21 +78,17 @@ class Card:
 		#case c
 		elif defender_card.name_of_card == "Magical web":
 			print("{} used '{}' to heal {} points! ---> {} used '{}' and interupted the healing!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
-		else: #no defender_card == None
-			attacker.hp += self.ability_score
-			if attacker.hp > Player.total_hp:
-				attacker.hp = Player.total_hp
-			print("{} used '{}' to heal {} points! ---> {} had no available card! {}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, attacker.player_name, attacker.hp))
+
 
 	def canceling(self, attacker, defender_card, defender_player):
-			#case f
-		if defender_card.type_of_card == "block" or defender_card.type_of_card == "balander" or defender_card.name_of_card == "Drinking ouiski":
+		if defender_card == None:
+			print("{} had no cards so {} used '{}' to counter nothing!".format(defender_player.player_name, attacker.player_name, self.name_of_card))
+		#case f
+		elif defender_card.type_of_card == "block" or defender_card.type_of_card == "balander" or defender_card.name_of_card == "Drinking ouiski":
 			print("{} used '{}' to counter {}'s action ---> {} used '{}' but got countered!".format(attacker.player_name, self.name_of_card, defender_player.player_name, defender_player.player_name, defender_card.name_of_card))
 		#case g
 		elif defender_card.name_of_card == "Magical web":
 			print("Both players used '{}' and countered each other!".format(self.name_of_card))
-		else: #no defender_card == None
-			print("{} had no cards so {} used '{}' to counter nothing!".format(defender_player.player_name, attacker.player_name, self.name_of_card))
 
 
 class Player:
