@@ -85,3 +85,27 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
 input safety measures							COMPLETE
 situations when deck reach zero and hand starts to be less than 3       COMPLETE
 (maybe mode to play against computer/andother miscalanius for appearence and easy of use)      NOTREQUIRED
+
+
+playing against the computer mode:				COMPLETE
+*(for this mode to work there needs to be a gameover on 0 cards) COMPLETE
+	*fucntion pick_a_card and class Player need option if is a computer or not:  COMPLETE
+		if player is computer:
+			automatically pick   COMPLETE
+	
+	show_hand:       COMPLETE
+		doesn't need to show hand only give to thee computer the available cards
+		need r posibility
+	
+	
+	
+	*on set_up option for computer will return an True/False if the compputer 
+		fucntions automaticaly:
+			start_turn  
+			draw_cards:
+				at random cards except for the healing
+				
+	***Some times when the pc is on the defending it is skipping the whole turn  INCOMPLETE MORE TESTING NEEDED
+	Computer chooses completly with luck, even if it doesn't have to heal
+
+	

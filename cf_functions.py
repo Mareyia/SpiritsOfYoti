@@ -284,57 +284,72 @@ def computer_pick_a_card(current_player, enemy_player, initiative):
 	print("{} is picking a card...".format(current_player.player_name))
 	to_continue()
 
-	valid_options_no_r_first, valid_options_no_r_second = computer_hand(current_player.hand, initiative)
+	valid_options_no_r_first, valid_options_no_r_second = computer_hand(current_player.hand, initiative, current_player.hp)
 
 	if initiative:
 
 		#valid_options_no_r_first for ssafety measure2 
 		#print(display_hand_first) #shows hand
-		if len(valid_options_no_r_second) == 0 and len(current_player.deck) == 0:
-			card_selection = None
-			#to_continue()
-		else:
-			if len(valid_options_no_r_second) == 0:
-				need_replacement = True
+		if len(current_player.deck) == 0:
+			if len(valid_options_no_r_first) == 0:
+				card_selection = None
 			else:
-				want_r = randint(0,9)
-				if want_r < 2:
-					need_replacement = True 
-			card_selection = current_player.hand[randint(0, len(valid_options_no_r_first)-1)]
+				card_selection = valid_options_no_r_first[randint(0, len(valid_options_no_r_first)-1)]
+		else:
+			want_r = randint(0,9)
+			#the chanses of choosing to replace a card (n<2 = 20%)
+			if len(valid_options_no_r_first) == 0 or want_r < 2:
+				need_replacement = True
+				card_selection = current_player.hand[randint(0, len(current_player.hand)-1)]
+			else:
+				card_selection = valid_options_no_r_first[randint(0, len(valid_options_no_r_first)-1)]
 
 
 
 	#this function will continue with else when current player is the defending player 
 	else:
-		print("current hp: {}".format(current_player.hp))
+		if not current_player.computer:
+			print("current hp: {}".format(current_player.hp))
 
 		#if there are no available cards to defend with
 		if len(valid_options_no_r_second) == 0:
 			card_selection = None
-			#to_continue()
 		else:
-			card_selection = current_player.hand[randint(0, len(valid_options_no_r_second)-1)]
+			card_selection = valid_options_no_r_second[randint(0, len(valid_options_no_r_second)-1)]
 
 	#picking the card
-	if card_selection !=None and not need_replacement:
+	if card_selection !=None:
+		if not need_replacement:
 			current_player.remove_card(card_selection)
+	print("\nComputer picked: {}\n".format(card_selection))
 	return card_selection, need_replacement
 
 
 
 #copy of show_hand for computer
-def computer_hand(players_hand, player_initiative):
-	#show_cards_1 = "Now pick a card:\n\n"
-	valid_options = []
+def computer_hand(players_hand, player_initiative, players_hp):
 	valid_options_no_r_1 = []
 	valid_options_no_r_2 = []
-	for i in range(len(players_hand)):
+	for card in players_hand:
 		#creating these nessery lists to return for the pick_card's safety measures to work
-		valid_options.append(str(i+1))
-		if players_hand[i].type_of_card != "block":
-			valid_options_no_r_1.append(str(i+1))
-		if players_hand[i].type_of_card != "attack":
-			valid_options_no_r_2.append(str(i+1))
+		if card.type_of_card != "block":
+			if card.name_of_card == "Drinking ouiski":
+				if players_hp <= 7:
+					valid_options_no_r_1.append(card)
+			else:
+				valid_options_no_r_1.append(card)
+		if card.type_of_card != "attack":
+			valid_options_no_r_2.append(card)
+				
+	print("\n\nComputer Hand:")
+	for card in players_hand:
+		print(card)
+	print("\nAvailable ATTAcking options:")
+	for card in valid_options_no_r_1:
+		print(card)
+	print("\nAvailable DEFFending options:")
+	for card in valid_options_no_r_2:
+		print(card)
 
 
 	return valid_options_no_r_1, valid_options_no_r_2
