@@ -74,7 +74,7 @@ class Card:
 				attacker.hp = Player.total_hp
 			if defender_player.hp > Player.total_hp:
 				defender_player.hp = Player.total_hp
-			print("{} used '{}' to heal {} points! ---> {} also used '{}' to {} points!\n{}'s hp: {}\n{}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score, attacker.player_name, attacker.hp, defender_player.player_name, defender_player))
+			print("{} used '{}' to heal {} points! ---> {} also used '{}' to {} points!\n{}'s hp: {}\n{}'s hp: {}".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card, defender_card.ability_score, attacker.player_name, attacker.hp, defender_player.player_name, defender_player.hp))
 		#case c
 		elif defender_card.name_of_card == "Magical web":
 			print("{} used '{}' to heal {} points! ---> {} used '{}' and interupted the healing!".format(attacker.player_name, self.name_of_card, self.ability_score, defender_player.player_name, defender_card.name_of_card))
@@ -93,7 +93,7 @@ class Card:
 
 class Player:
 	total_hp = 10
-	def __init__(self, player_name, deck, deck_key, player_turn):
+	def __init__(self, player_name, deck, deck_key, player_turn, computer=False):
 		self.player_name = player_name
 		#self.key to keep the key's name from the dictionary and self.deck for the actuall deck from the value *Possibility to do this by importing the dictionary directly from the file without the need of a second seperate class variable to hold the name maybe?
 		self.deck = deck						#raw deck from the dictionary, sorted
@@ -103,6 +103,7 @@ class Player:
 		self.ready_deck = []					#cards from the deck in random order 
 		self.hand = []							#the 3 available cards for the player to play
 		self.hp = self.total_hp
+		self.computer = computer
 	def __repr__(self):
 		return "Player {}, {} with '{}' deck.".format(self.player_turn, self.player_name, self.deck_key)
 

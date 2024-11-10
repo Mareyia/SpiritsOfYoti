@@ -4,9 +4,20 @@ from random import randint
 
 
 # here the game starts and ends if any player reaches 0 hp. *The start_turn function returns a bool that changes if the upper condition changes.
-def playGame():
-	player_1 = set_up(1)
-	player_2 = set_up(2, player_1.player_name)
+def playGame(computerPlay):
+	if computerPlay:
+		who_playes_first = input("Do you want to play first or second?\nType here '1' for first or '2' for second: ")
+		while who_playes_first not in ['1', '2']:
+			who_playes_first = input("Invalid pick again: ")
+		if who_playes_first == '1':
+			player_1 = set_up(1)
+			player_2 = computer_set_up(2, player_1.player_name)
+		else:
+			player_1 = computer_set_up(1)
+			player_2 = set_up(2, player_1.player_name)
+	else:
+		player_1 = set_up(1)
+		player_2 = set_up(2, player_1.player_name)
 
 	game_end = False
 	while not game_end:
@@ -65,11 +76,13 @@ def start_turn(current_player, enemy_player):
 	current_player.draw_cards()
 	enemy_player.draw_cards()
 
-	to_continue()
-	print(ton_of_space)
+	if not current_player.computer and not enemy_player.computer:
+		to_continue()
+		print(ton_of_space)
 	#checks if any player reaced 0 hp so the game will end
 	condition, cards_finished = current_player.check_status()
-	to_continue()
+	if not current_player.computer and not enemy_player.computer:
+		to_continue()
 	if condition:
 		print("""\n\n{} died!
 
@@ -98,23 +111,35 @@ def start_turn(current_player, enemy_player):
 				print("\n\nno cards left and you have the same hp...\n\tIts a fucking draw!\n")
 				return True				#with this the hole game needs to ends
 
-		#asks players to pick a card to play or to replace
-		card_selected_attacking, replacing = pick_a_card(current_player, enemy_player, True)
+		#check if the player is the computer
+		if current_player.computer:
+			card_selected_attacking, replacing = computer_pick_a_card(current_player, enemy_player, True)
+		else:
+			#asks players to pick a card to play or to replace
+			card_selected_attacking, replacing = pick_a_card(current_player, enemy_player, True)
+			
 		if replacing:
 			#when replacing nothing else happens
 			replace_card(current_player, card_selected_attacking)
+		elif card_selected_attacking == None:
+			print("{} had no available cards and loses its turn".format(current_player.player_name))
 		else:
 			#if not replacing the other player has to pick a card too and the cards fight
-			card_selected_defending, not_needed = pick_a_card(enemy_player, current_player, False)
-			print(ton_of_space)
+			if enemy_player.computer:
+				card_selected_defending, not_needed = computer_pick_a_card(enemy_player, current_player, False)
+			else:
+				card_selected_defending, not_needed = pick_a_card(enemy_player, current_player, False)
+			if not current_player.computer and not enemy_player.computer:
+				print(ton_of_space)
 			fight(current_player, card_selected_attacking, enemy_player, card_selected_defending)
 		return False
 
 #ask each player to pick a card
 def pick_a_card(current_player, enemy_player, initiative):
 	need_replacement = False				#on/of if the player wants to replace a card
-	print("{}{} is about to pick a card {} don't look!".format(ton_of_space, current_player.player_name, enemy_player.player_name))
-	to_continue()
+	if not enemy_player.computer:
+		print("{}{} is about to pick a card {} don't look!".format(ton_of_space, current_player.player_name, enemy_player.player_name))
+		to_continue()
 	#for#testing#print("{} is about to pick a card {} don't look!".format(current_player.player_name, enemy_player.player_name))
 	display_hand_first, display_hand_second, valid_options_total, valid_options_no_r_first, valid_options_no_r_second = show_hand(current_player.hand, initiative)
 	#valid_options_total for ssafety measure1 if the replacing option selected
@@ -123,34 +148,39 @@ def pick_a_card(current_player, enemy_player, initiative):
 
 		#valid_options_no_r_first for ssafety measure2 
 		print(display_hand_first) #shows hand
-		card_selection = input("Pick a/an card/option here: ")
+		if len(valid_options_no_r_first) == 0 and len(current_player.deck) == 0:
+			print("No available card to select")
+			card_selection = None
+			to_continue()
+		else:
+			card_selection = input("Pick a/an card/option here: ")
 
-		#safety measure0, if player types something wrong or r
-		while card_selection not in valid_options_no_r_first:
+			#safety measure0, if player types something wrong or r
+			while card_selection not in valid_options_no_r_first:
 
-			#in case the player wants to replace a card
-			if card_selection == 'r':
-				card_selection = input("Pick a card to replace: ")
-				need_replacement = True
-			
-				#safety measure1, if player types something wrong
-				while card_selection not in valid_options_total:
-					print("Invalid option")
-					card_selection = input("Type again: ")
-				break
-
-			#player doesn't want to replace any card
-			else:
+				#in case the player wants to replace a card
+				if card_selection == 'r':
+					card_selection = input("Pick a card to replace: ")
+					need_replacement = True
 				
-				if card_selection in valid_options_total:
-					#safety measure2, if player attemps to pick an invalid card
-					if current_player.hand[int(card_selection) - 1].type_of_card == "block":
-						print("Cannot play a defenfing (BLOCK-type) card on your initiative")
-						card_selection = input("Pick again: ")
-				#resolution of measure0
+					#safety measure1, if player types something wrong
+					while card_selection not in valid_options_total:
+						print("Invalid option")
+						card_selection = input("Type again: ")
+					break
+
+				#player doesn't want to replace any card
 				else:
-					print("Invalid option")
-					card_selection = input("Type again: ")
+					
+					if card_selection in valid_options_total:
+						#safety measure2, if player attemps to pick an invalid card
+						if current_player.hand[int(card_selection) - 1].type_of_card == "block":
+							print("Cannot play a defenfing (BLOCK-type) card on your initiative")
+							card_selection = input("Pick again: ")
+					#resolution of measure0
+					else:
+						print("Invalid option")
+						card_selection = input("Type again: ")
 
 	#this function will continue with else when current player is the defending player 
 	else:
@@ -236,3 +266,118 @@ def show_hand(players_hand, player_initiative):
 	show_cards_1 += attacker_message
 
 	return show_cards_1, show_cards_2, valid_options, valid_options_no_r_1, valid_options_no_r_2
+
+
+
+
+
+
+
+
+
+#### MODE VS COMPUTER
+
+
+#copy of pick_a_card for computer
+def computer_pick_a_card(current_player, enemy_player, initiative):
+	need_replacement = False				#on/of if the player wants to replace a card
+	print("{} is picking a card...".format(current_player.player_name))
+	to_continue()
+
+	valid_options_no_r_first, valid_options_no_r_second = computer_hand(current_player.hand, initiative)
+
+	if initiative:
+
+		#valid_options_no_r_first for ssafety measure2 
+		#print(display_hand_first) #shows hand
+		if len(valid_options_no_r_second) == 0 and len(current_player.deck) == 0:
+			card_selection = None
+			#to_continue()
+		else:
+			if len(valid_options_no_r_second) == 0:
+				need_replacement = True
+			else:
+				want_r = randint(0,9)
+				if want_r < 2:
+					need_replacement = True 
+			card_selection = current_player.hand[randint(0, len(valid_options_no_r_first)-1)]
+
+
+
+	#this function will continue with else when current player is the defending player 
+	else:
+		print("current hp: {}".format(current_player.hp))
+
+		#if there are no available cards to defend with
+		if len(valid_options_no_r_second) == 0:
+			card_selection = None
+			#to_continue()
+		else:
+			card_selection = current_player.hand[randint(0, len(valid_options_no_r_second)-1)]
+
+	#picking the card
+	if card_selection !=None and not need_replacement:
+			current_player.remove_card(card_selection)
+	return card_selection, need_replacement
+
+
+
+#copy of show_hand for computer
+def computer_hand(players_hand, player_initiative):
+	#show_cards_1 = "Now pick a card:\n\n"
+	valid_options = []
+	valid_options_no_r_1 = []
+	valid_options_no_r_2 = []
+	for i in range(len(players_hand)):
+		#creating these nessery lists to return for the pick_card's safety measures to work
+		valid_options.append(str(i+1))
+		if players_hand[i].type_of_card != "block":
+			valid_options_no_r_1.append(str(i+1))
+		if players_hand[i].type_of_card != "attack":
+			valid_options_no_r_2.append(str(i+1))
+
+
+	return valid_options_no_r_1, valid_options_no_r_2
+	
+	
+	
+	
+#copy of setup for computer
+def computer_set_up(whos_turn, player_1st=None):
+	#recive the name from the player
+	name = input("\nPlayer {} is the computer! How do you want to be called?: ".format(whos_turn))
+	if player_1st !=None:
+		while name == player_1st:
+			name = input("player 1 already has this name, pick a difrent one: ")
+
+	#upgrade can now add more decks by just adding them on the cf_list_dicks
+	print("\nNow pick a deck for the computer")
+	#allow the computer to pick for it self
+	independent = input("Or if you want the computer to pick one for itself type 'Y': ")
+	if independent in ['Y', 'y']:
+		deck_selection = randint(0, len(list(decks.keys()))-1)
+	else:
+		for i in range(len(list(decks.keys()))):
+			print("	{}: '{}'".format(i+1, list(decks.keys())[i]))
+		print("\nor 'l' to list every card on each deck")
+
+		#recieve the choise of deck from the player 
+		deck_selection = input("Type here: ")
+		while deck_selection not in [str(i+1) for i in range(len(list(decks.keys())))]:
+			if deck_selection == 'l':
+				for deck in decks:
+					print("\n\t'{}':".format(deck))
+					for card in decks[deck]:
+						print(card)
+				deck_selection = input("Type here: ")
+			else:
+				deck_selection = input("Invalid input, type again: ")
+	current_player =  Player(name, list(decks[list(decks.keys())[int(deck_selection)-1]]), list(decks.keys())[int(deck_selection)-1], whos_turn, True)
+
+	#randomize the deck
+	current_player.randomize()
+
+	#draw 3 cards
+	current_player.draw_cards()
+
+	return current_player

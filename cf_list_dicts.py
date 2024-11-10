@@ -3,12 +3,18 @@ from cf_classes import Card
 light_attack = Card("Punch of focus", "attack", 2)
 heavy_attack = Card("Kick of fury", "attack", 3)
 ability_attack = Card("Flame spit", "attack", 5)
+ultra_attack = Card("Xisia", "attack", 8)
+heavy_attack_2 = Card("Headbut", "attack", 5)
+
 
 light_block = Card("Power stance", "block", 1)
 heavy_block = Card("Dodje", "block", 3)
+sexy_block = Card("Feet distraction", "block", 5)
+heavy_block_2 = Card("Smelly Diaria", "block", 0)
 
 light_balander = Card("Throwing rocks", "balander", 3)  
 heavy_balander = Card("Shooting hertfull words", "balander", 4)
+heavy_balander_2 = Card("Aima Periodou", "balander", 6)
 
 simple_special = Card("Drinking ouiski", "special", 3)
 special_special = Card("Magical web", "special")     
@@ -17,6 +23,8 @@ decks = {
 "Firefly":[light_attack, heavy_attack, ability_attack, ability_attack, light_block, light_block, light_balander, light_balander, light_balander, heavy_balander, heavy_balander, simple_special],
 "Antblue": [light_attack, heavy_attack, light_block, heavy_block, heavy_block, light_balander, light_balander, heavy_balander, heavy_balander, simple_special, special_special, special_special]
 }
+#"Poutsa": [heavy_attack, heavy_attack_2, heavy_attack_2, ultra_attack, ultra_attack, sexy_block, heavy_block_2, heavy_block_2, heavy_balander_2, heavy_balander_2, heavy_balander_2, heavy_balander_2]
+
 
 instructions = """
 --Card Fight is a turn-based game for two local players, were they put their cards the one against the other and tries to kill their oppement. 
