@@ -109,9 +109,25 @@ UPGAREDES BELOW: (maybe mode to play against computer/andother miscalanius for a
 	Computer chooses completly with luck, even if it doesn't have to heal COMPLETE
 
 2) Appearence of game with ASC Art
+	1 Every Card apearance
+	2 Table
+	3 Pick Apearance
+
 
 3) Replace to_continue function with timers/animations (At least for against the computer mode)
 	1 Timers		COMPLETE
 	2 Animations?
+		Card vs Card
+			a attacking --> blocking  
+          		b attacking --> healing  
+          		c attacking/healing --> canceling  
+          		d healing --> blocking  
+          		e healing --> healing  
+          		f canceling --> healing/blocking 
+          		g canceling --> canceling  
+          		all cases:
+          			attacker
+          			ddefender
+		
 
 	

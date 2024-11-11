@@ -1,29 +1,29 @@
 from cf_classes import Card
 
-light_attack = Card("Punch of focus", "attack", 2)
-heavy_attack = Card("Kick of fury", "attack", 3)
-ability_attack = Card("Flame spit", "attack", 5)
-ultra_attack = Card("Xisia", "attack", 8)
-heavy_attack_2 = Card("Headbut", "attack", 5)
+punch_of_focus = Card("Punch of focus", "attack", 2)
+kick_of_fury = Card("Kick of fury", "attack", 3)
+flame_spit = Card("Flame spit", "attack", 5)
+xisia = Card("Xisia", "attack", 8)
+headbut = Card("Headbut", "attack", 5)
 
 
-light_block = Card("Power stance", "block", 1)
-heavy_block = Card("Dodje", "block", 3)
-sexy_block = Card("Feet distraction", "block", 5)
-heavy_block_2 = Card("Smelly Diaria", "block", 0)
+power_stance = Card("Power stance", "block", 1)
+dodje = Card("Dodje", "block", 3)
+feet_distraction = Card("Feet distraction", "block", 5)
+smelly_diaria = Card("Smelly Diaria", "block", 0)
 
-light_balander = Card("Throwing rocks", "balander", 3)  
-heavy_balander = Card("Shooting hertfull words", "balander", 4)
-heavy_balander_2 = Card("Aima Periodou", "balander", 6)
+throwing_rocks = Card("Throwing rocks", "balander", 3)  
+shooting_hertfull_words = Card("Shooting hertfull words", "balander", 4)
+aima_Periodou = Card("Aima Periodou", "balander", 6)
 
-simple_special = Card("Drinking ouiski", "special", 3)
-special_special = Card("Magical web", "special")     
+drinking_ouiski = Card("Drinking ouiski", "special", 3)
+magical_web = Card("Magical web", "special")     
 
 decks = {
-"Firefly":[light_attack, heavy_attack, ability_attack, ability_attack, light_block, light_block, light_balander, light_balander, light_balander, heavy_balander, heavy_balander, simple_special],
-"Antblue": [light_attack, heavy_attack, light_block, heavy_block, heavy_block, light_balander, light_balander, heavy_balander, heavy_balander, simple_special, special_special, special_special]
+"Firefly":[punch_of_focus, kick_of_fury, flame_spit, flame_spit, power_stance, power_stance, throwing_rocks, throwing_rocks, throwing_rocks, shooting_hertfull_words, shooting_hertfull_words, drinking_ouiski],
+"Antblue": [punch_of_focus, kick_of_fury, power_stance, dodje, dodje, throwing_rocks, throwing_rocks, shooting_hertfull_words, shooting_hertfull_words, drinking_ouiski, magical_web, magical_web]
 }
-#"Poutsa": [heavy_attack, heavy_attack_2, heavy_attack_2, ultra_attack, ultra_attack, sexy_block, heavy_block_2, heavy_block_2, heavy_balander_2, heavy_balander_2, heavy_balander_2, heavy_balander_2]
+#"Poutsa": [heavy_attack, headbut, headbut, xisia, xisia, feet_distraction, smelly_diaria, smelly_diaria, aima_Periodou, aima_Periodou, aima_Periodou, aima_Periodou]
 
 
 instructions = """
