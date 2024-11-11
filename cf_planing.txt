@@ -111,5 +111,7 @@ UPGAREDES BELOW: (maybe mode to play against computer/andother miscalanius for a
 2) Appearence of game with ASC Art
 
 3) Replace to_continue function with timers/animations (At least for against the computer mode)
+	1 Timers		COMPLETE
+	2 Animations?
 
 	

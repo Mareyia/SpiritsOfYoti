@@ -1,3 +1,4 @@
+import time
 from cf_list_dicts import decks, attacker_message, ton_of_space
 from cf_classes import Card, Player
 from random import randint
@@ -18,8 +19,10 @@ def playGame(computerPlay):
 	else:
 		player_1 = set_up(1)
 		player_2 = set_up(2, player_1.player_name)
+	print("")
 	print(player_1)
 	print(player_2)
+	print("")
 
 	game_end = False
 	while not game_end:
@@ -30,9 +33,18 @@ def playGame(computerPlay):
 
 
 
-# a helpfull function inbetwin inputs and prints to not output everything all together and creating chaos to the terminal   
-def to_continue():
-	finishedreading = input("Type anything to continue: ") 
+# a helpfull function inbetwin inputs and prints to not output everything all together and creating chaos to the terminal
+## upgraded to continue automaticaly, less types
+def to_continue(auto_or_manual=0):
+	if auto_or_manual == 0:
+		finishedreading = input("Type anything to continue: ")
+	else:
+		time_to_wait = auto_or_manual
+		#waiting_message = ""
+		for i in range(time_to_wait):
+			#waiting_message += "."
+			print(end="\r")
+			time.sleep(1)
 
 
 # function that will get repeated for each plater, accepts the number corresponting to the current player and return a completed player object with randomized deck, name, hand and hp
@@ -79,12 +91,14 @@ def start_turn(current_player, enemy_player):
 	enemy_player.draw_cards()
 
 	if not current_player.computer and not enemy_player.computer:
-		to_continue()
-		print(ton_of_space)
+		#some time for the players to see who playes
+		to_continue(3)
+		#print(ton_of_space)
 	#checks if any player reaced 0 hp so the game will end
 	condition, cards_finished = current_player.check_status()
-	if not current_player.computer and not enemy_player.computer:
-		to_continue()
+	
+	# some time to read the players information
+	to_continue(4)
 	if condition:
 		print("""\n\n{} died!
 
@@ -134,6 +148,12 @@ def start_turn(current_player, enemy_player):
 			if not current_player.computer and not enemy_player.computer:
 				print(ton_of_space)
 			fight(current_player, card_selected_attacking, enemy_player, card_selected_defending)
+			
+			# some time to watch the result of the fight
+			if not current_player.computer and not enemy_player.computer:
+				to_continue(3)
+			else:
+				to_continue(3)
 		return False
 
 #ask each player to pick a card
@@ -143,6 +163,8 @@ def pick_a_card(current_player, enemy_player, initiative):
 		print("{}{} is about to pick a card {} don't look!".format(ton_of_space, current_player.player_name, enemy_player.player_name))
 		to_continue()
 	#for#testing#print("{} is about to pick a card {} don't look!".format(current_player.player_name, enemy_player.player_name))
+	if not current_player.computer and not enemy_player.computer:
+		print("\nHP: {}, cards left on deck: {}\n".format(current_player.hp, len(current_player.ready_deck)))
 	display_hand_first, display_hand_second, valid_options_total, valid_options_no_r_first, valid_options_no_r_second = show_hand(current_player.hand, initiative)
 	#valid_options_total for ssafety measure1 if the replacing option selected
 	#initiative: checks to see if the current_player is in the attack
@@ -153,7 +175,7 @@ def pick_a_card(current_player, enemy_player, initiative):
 		if len(valid_options_no_r_first) == 0 and len(current_player.deck) == 0:
 			print("No available card to select")
 			card_selection = None
-			to_continue()
+			to_continue(2)
 		else:
 			card_selection = input("Pick a/an card/option here: ")
 
@@ -193,7 +215,7 @@ def pick_a_card(current_player, enemy_player, initiative):
 		if len(valid_options_no_r_second) == 0:
 			print("No available card to select")
 			card_selection = None
-			to_continue()
+			to_continue(2)
 		else:
 			card_selection = input("Pick a card here: ")
 
@@ -284,7 +306,7 @@ def show_hand(players_hand, player_initiative):
 def computer_pick_a_card(current_player, enemy_player, initiative):
 	need_replacement = False				#on/of if the player wants to replace a card
 	print("{} is picking a card...".format(current_player.player_name))
-	to_continue()
+	to_continue(1)
 
 	valid_options_no_r_first, valid_options_no_r_second = computer_hand(current_player.hand, initiative, current_player.hp, len(current_player.ready_deck))
 
