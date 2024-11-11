@@ -84,10 +84,10 @@ ksekinaei loupa KALOSORIZEI kai deinei tris epiloges, molis oloklirothei mia epi
          
 input safety measures							COMPLETE
 situations when deck reach zero and hand starts to be less than 3       COMPLETE
-(maybe mode to play against computer/andother miscalanius for appearence and easy of use)      NOTREQUIRED
+UPGAREDES BELOW: (maybe mode to play against computer/andother miscalanius for appearence and easy of use) 		1/3 COMPLETE
 
 
-playing against the computer mode:				COMPLETE
+1)  playing against the computer mode:				COMPLETE
 *(for this mode to work there needs to be a gameover on 0 cards) COMPLETE
 	*fucntion pick_a_card and class Player need option if is a computer or not:  COMPLETE
 		if player is computer:
@@ -105,7 +105,11 @@ playing against the computer mode:				COMPLETE
 			draw_cards:
 				at random cards except for the healing
 				
-	***Some times when the pc is on the defending it is skipping the whole turn  INCOMPLETE MORE TESTING NEEDED
-	Computer chooses completly with luck, even if it doesn't have to heal
+	***Some times when the pc is on the defending it is skipping the whole turn  COMPLETE
+	Computer chooses completly with luck, even if it doesn't have to heal COMPLETE
+
+2) Appearence of game with ASC Art
+
+3) Replace to_continue function with timers/animations (At least for against the computer mode)
 
 	

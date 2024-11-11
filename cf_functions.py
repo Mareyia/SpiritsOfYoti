@@ -18,6 +18,8 @@ def playGame(computerPlay):
 	else:
 		player_1 = set_up(1)
 		player_2 = set_up(2, player_1.player_name)
+	print(player_1)
+	print(player_2)
 
 	game_end = False
 	while not game_end:
@@ -284,24 +286,23 @@ def computer_pick_a_card(current_player, enemy_player, initiative):
 	print("{} is picking a card...".format(current_player.player_name))
 	to_continue()
 
-	valid_options_no_r_first, valid_options_no_r_second = computer_hand(current_player.hand, initiative, current_player.hp)
+	valid_options_no_r_first, valid_options_no_r_second = computer_hand(current_player.hand, initiative, current_player.hp, len(current_player.ready_deck))
 
 	if initiative:
-
-		#valid_options_no_r_first for ssafety measure2 
-		#print(display_hand_first) #shows hand
-		if len(current_player.deck) == 0:
+		#valid_options_no_r_first for computer attacking options 
+		if len(current_player.ready_deck) == 0:
 			if len(valid_options_no_r_first) == 0:
 				card_selection = None
 			else:
 				card_selection = valid_options_no_r_first[randint(0, len(valid_options_no_r_first)-1)]
 		else:
-			want_r = randint(0,9)
-			#the chanses of choosing to replace a card (n<2 = 20%)
+			want_r = randint(0, 9)
+			#the chanses of choosing to replace a card (want_r<2 = 20%)
 			if len(valid_options_no_r_first) == 0 or want_r < 2:
 				need_replacement = True
 				card_selection = current_player.hand[randint(0, len(current_player.hand)-1)]
 			else:
+				#picking the card
 				card_selection = valid_options_no_r_first[randint(0, len(valid_options_no_r_first)-1)]
 
 
@@ -311,45 +312,48 @@ def computer_pick_a_card(current_player, enemy_player, initiative):
 		if not current_player.computer:
 			print("current hp: {}".format(current_player.hp))
 
+		#valid_options_no_r_second for computer defending options 
 		#if there are no available cards to defend with
 		if len(valid_options_no_r_second) == 0:
 			card_selection = None
 		else:
+			#picking the card
 			card_selection = valid_options_no_r_second[randint(0, len(valid_options_no_r_second)-1)]
 
-	#picking the card
 	if card_selection !=None:
 		if not need_replacement:
 			current_player.remove_card(card_selection)
-	print("\nComputer picked: {}\n".format(card_selection))
+	#TEST#print("\nComputer picked: {}\n".format(card_selection))
 	return card_selection, need_replacement
 
 
 
 #copy of show_hand for computer
-def computer_hand(players_hand, player_initiative, players_hp):
+def computer_hand(players_hand, player_initiative, players_hp, cards_left_ondeck):
 	valid_options_no_r_1 = []
 	valid_options_no_r_2 = []
 	for card in players_hand:
-		#creating these nessery lists to return for the pick_card's safety measures to work
+		#available attacking cardds for computer
 		if card.type_of_card != "block":
+			#forr computer to not use the healing card if its not required
 			if card.name_of_card == "Drinking ouiski":
-				if players_hp <= 7:
+				if players_hp <= 7 or cards_left_ondeck == 0:
 					valid_options_no_r_1.append(card)
 			else:
 				valid_options_no_r_1.append(card)
+		#available ddefending cardds for computer
 		if card.type_of_card != "attack":
 			valid_options_no_r_2.append(card)
 				
-	print("\n\nComputer Hand:")
-	for card in players_hand:
-		print(card)
-	print("\nAvailable ATTAcking options:")
-	for card in valid_options_no_r_1:
-		print(card)
-	print("\nAvailable DEFFending options:")
-	for card in valid_options_no_r_2:
-		print(card)
+	#STARTTEST#print("\n\nComputer Hand:")
+	#for card in players_hand:
+	#	print(card)
+	#print("\nAvailable ATTAcking options:")
+	#for card in valid_options_no_r_1:
+	#	print(card)
+	#print("\nAvailable DEFFending options:")
+	#for card in valid_options_no_r_2:
+	#ENDTEST#	print(card)
 
 
 	return valid_options_no_r_1, valid_options_no_r_2
@@ -359,34 +363,36 @@ def computer_hand(players_hand, player_initiative, players_hp):
 	
 #copy of setup for computer
 def computer_set_up(whos_turn, player_1st=None):
-	#recive the name from the player
-	name = input("\nPlayer {} is the computer! How do you want to be called?: ".format(whos_turn))
+	#recive the name for the computer
+	name = input("\nPlayer {} is the computer! Do you want to give it a name?\n(if not leave blank and press ENTER it will be called 'Computer'): ".format(whos_turn))
+	if name == "":
+		name = "Computer"
 	if player_1st !=None:
 		while name == player_1st:
 			name = input("player 1 already has this name, pick a difrent one: ")
 
 	#upgrade can now add more decks by just adding them on the cf_list_dicks
 	print("\nNow pick a deck for the computer")
-	#allow the computer to pick for it self
-	independent = input("Or if you want the computer to pick one for itself type 'Y': ")
-	if independent in ['Y', 'y']:
-		deck_selection = randint(0, len(list(decks.keys()))-1)
-	else:
-		for i in range(len(list(decks.keys()))):
-			print("	{}: '{}'".format(i+1, list(decks.keys())[i]))
-		print("\nor 'l' to list every card on each deck")
+	for i in range(len(list(decks.keys()))):
+		print("	{}: '{}'".format(i+1, list(decks.keys())[i]))
+	print("\nor 'l' to list every card on each deck")
 
-		#recieve the choise of deck from the player 
-		deck_selection = input("Type here: ")
-		while deck_selection not in [str(i+1) for i in range(len(list(decks.keys())))]:
-			if deck_selection == 'l':
-				for deck in decks:
-					print("\n\t'{}':".format(deck))
-					for card in decks[deck]:
-						print(card)
-				deck_selection = input("Type here: ")
-			else:
-				deck_selection = input("Invalid input, type again: ")
+	deck_selection = input("(Or if you want the computer to pick one for itself leave blank and press ENTER: ")
+	#recieve the choise of deck from the player for the coomputer
+	while deck_selection not in [str(i+1) for i in range(len(list(decks.keys())))] and deck_selection != "":
+		if deck_selection == 'l':
+			for deck in decks:
+				print("\n\t'{}':".format(deck))
+				for card in decks[deck]:
+					print(card)
+			deck_selection = input("Type here: ")
+		else:
+			deck_selection = input("Invalid input, type again: ")
+	#allow the computer to pick for it self
+	if deck_selection == "":
+		deck_selection = randint(0, len(list(decks.keys()))-1)
+
+
 	current_player =  Player(name, list(decks[list(decks.keys())[int(deck_selection)-1]]), list(decks.keys())[int(deck_selection)-1], whos_turn, True)
 
 	#randomize the deck
