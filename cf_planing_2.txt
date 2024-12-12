@@ -1,0 +1,14 @@
+New skills to use in the ffollowing:
+
+	1) Deck - Stack
+	2) Check every function and method to make more eficient, use recursion if needed maybe
+	3) Map - Graph
+	4) Computer Difficulty - Use A* algorith to add the hardest difficulty
+					culculate efficiently the best possible choice for the computer (here lies the requirement for the 2nd portfolio project. depending on the user's input, the computer mast make the best winning move)
+					maybe using a simple graph search can identiffy all the cases:
+						how to make predictions in this type of game
+			       - Use Dijkstra to add the normal diffficulty
+	5) will hash map be helpfull in any way here?
+olds	6) how I am going to implement:
+		a) the ASC Art
+		b) Animations
