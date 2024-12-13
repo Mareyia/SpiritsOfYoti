@@ -3,7 +3,7 @@ New skills to use in the ffollowing:
 	1) Deck - Stack
 	2) Check every function and method to make more eficient, use recursion if needed maybe
 	3) Map - Graph
-	4) Computer Difficulty - Use A* algorith to add the hardest difficulty
+	4) Computer Difficulty  - Tree (Use A* algorith to add the hardest difficulty)
 					culculate efficiently the best possible choice for the computer (here lies the requirement for the 2nd portfolio project. depending on the user's input, the computer mast make the best winning move)
 					maybe using a simple graph search can identiffy all the cases:
 						how to make predictions in this type of game
@@ -12,3 +12,57 @@ New skills to use in the ffollowing:
 olds	6) how I am going to implement:
 		a) the ASC Art
 		b) Animations
+	7) add a README for GitHub that describes the 1st and 2nd protffolio project requiremts and explains everything
+	
+	
+
+
+4) How to make predictions
+
+What computer knows each turn:
+	Remembers all the cards each deck has
+		uknown what are cards on enemys hand, 
+		doesn't know what is the next card on deck.
+	Affter every card that is played it remembers that this card cannot be played again
+	Aware off the given moments
+	
+build a giant graph with every possibility given
+	how to create it without the need to find them all by myselfff one by one
+		ideas:
+		a) 	
+			The computer can play the game against itself in the background with every deck combination to know each result.
+			that means that the computer has to play the game 
+				N = number of decks
+				all deck order combinations = fib(N, mult)*
+(*
+def fibonacci2(n):
+	if n < 0:
+		ValueError("Input 0 or greater only!")
+	if n <= 2:
+		return n
+	return n * fibonacci2(n - 1)
+*)
+				
+				all move combinations = (all deck order combinations)*(all deck order combinations)
+				in case of a 12card deck this will be:
+					all deck order combinations = 479.001.600
+					all move combinations = 229.442.532.802.560.000 
+						(because of game restrictions this number can be smaller)
+						(because replacement option this number can be larger)
+							cannot calculate replacements because it can be infinite
+			And only save the best moves for each case
+				The knowlege off the cards played and the memory of the decks can help find the best move its turn
+		
+		b) not need to play the game multiple times in the background?
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
