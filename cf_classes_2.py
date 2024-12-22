@@ -1,24 +1,29 @@
-from cf_list_dicts import decks
-#from math import abs
+#from cf_list_dicts import decks
 
 
 class entity:
 	def __init__(self, character, starting_position, npc=False):
 		self.character = character
 		self.position = starting_position
+		self.position.entity_ocupation = self
 		self.npc = npc
+	
+	def change_potition(self, new_position):
+		self.position.entity_ocupation = None
+		self.position = new_position
+		self.position.entity_ocupation = self
 
 
 
 
 class possition:
-	def __init__(self, identity, type_of, location, entity_ocupied=None, autofill_roads=True):
+	def __init__(self, identity, type_of, location, autofill_roads=True):
 		self.identity = identity
 		self.type_of = type_of
 		self.location = location
 		self.distance = 0
 		self.destinacions = {}
-		self.entity_ocupation = entity_ocupied
+		self.entity_ocupation = None
 		self.autofill_roads =  autofill_roads
 		#if position is a road and you don't want to manually add its parts it can happen automatically autoffilling the map distance
 		if self.type_of == "road":
@@ -76,6 +81,9 @@ class possition:
 							copy_of_distance -= 1
 							y_distance += 1
 
+	def __repr__(self):
+		return self.type_of[0].upper() + self.type_of[1:] + " " + self.identity
+	
 	def add_roads(self, road):
 		self.destinacions[road.identity] = road
 	
@@ -87,7 +95,7 @@ class possition:
 
 
 
-class the_map:
+class playing_grid:
 	def __init__(self, x_length, y_length):
 		self.number_of_digits_for_spacing = 0
 		self.string_for_spacing = ""
@@ -141,6 +149,8 @@ class the_map:
 		
 	def add_position(self, square):
 		square_string = square.identity
+		if square.entity_ocupation is not None:
+			square_string = square.entity_ocupation.character
 		if len(square_string) > self.number_of_digits_for_spacing:
 			square_string = square_string[0]
 		space_needed = self.number_of_digits_for_spacing - len(square_string)
@@ -156,33 +166,44 @@ class the_map:
 			self.add_position(road.destinacions[road_part])
 
 
+class the_map:
+	def __init__(self, playing_area):
+		self.playing_area = playing_area
+		self.locations = []
+		self.roads = []
+		self.entities = []
+	
+	def __repr__(self):
+		return self.playing_area.__repr__()
+		
+	def add_location(self, location):
+		self.locations.append(location)
+		
+	def add_road(self, road):
+		self.roads.append(road)
+	
+	def add_entity(self, entity):
+		self.entities.append(entity)
+	
+	def create_map(self):
+		for road in self.roads:
+			self.playing_area.fill_the_road(road)
+		for location in self.locations:
+			self.playing_area.add_position(location)
+	
+	def update_map(self, position=None):
+		if position is not None:
+			self.playing_area.add_position(self.locations[position])
+		else:
+			for location in self.locations:
+				self.playing_area.add_position(location)
+				
+	def move_entity(self, entity, position):
+		entity.change_potition(position)
+		self.update_map()
 
 
-location_A = possition("A_l", "location", [11, 6])
-location_B = possition("B_l", "location", [8, 12])
-road_A = possition("A_r", "road", [location_A, location_B])
 
-location_C = possition("C_l", "location", [17, 25])
-location_D = possition("D_l", "location", [1, 17])
-road_B = possition("B_r", "road", [location_C, location_D])
-
-location_E = possition("E_l", "location", [7, 3])
-location_F = possition("F_l", "location", [14, 10])
-road_C = possition("C_r", "road", [location_E, location_F])
-
-A_map = the_map(17, 25)
-
-A_map.fill_the_road(road_A)
-A_map.fill_the_road(road_B)
-A_map.fill_the_road(road_C)
-A_map.add_position(location_A)
-A_map.add_position(location_B)
-A_map.add_position(location_C)
-A_map.add_position(location_E)
-A_map.add_position(location_D)
-A_map.add_position(location_F)
-
-print(A_map)
 
 
 
