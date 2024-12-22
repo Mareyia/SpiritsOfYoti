@@ -29,7 +29,7 @@ What computer knows each turn:
 build a giant graph with every possibility given
 	how to create it without the need to find them all by myselfff one by one
 		ideas:
-		a) 	
+		a) 	FAILED DIRECTION. FULLS MEMORY AND STOPS WORKING
 			The computer can play the game against itself in the background with every deck combination to know each result.
 			that means that the computer has to play the game 
 				N = number of decks

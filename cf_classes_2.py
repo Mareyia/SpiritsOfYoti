@@ -1,4 +1,5 @@
 from cf_list_dicts import decks
+#from math import abs
 
 
 class entity:
@@ -11,15 +12,78 @@ class entity:
 
 
 class possition:
-	def __init__(self, identity, x_axis, y_axis, distance=0, entity_ocupied=None):
+	def __init__(self, identity, type_of, location, entity_ocupied=None, autofill_roads=True):
 		self.identity = identity
-		self.location = (x_axis, y_axis)
-		self.distance = distance
+		self.type_of = type_of
+		self.location = location
+		self.distance = 0
+		self.destinacions = {}
 		self.entity_ocupation = entity_ocupied
-		self.roads = {}
+		self.autofill_roads =  autofill_roads
+		#if position is a road and you don't want to manually add its parts it can happen automatically autoffilling the map distance
+		if self.type_of == "road":
+			for loc in location:
+				loc.add_roads(self)
+			if autofill_roads == True:
+				location_A_postion_x = self.location[0].location[0]
+				location_A_postion_y = self.location[0].location[1]
+				location_B_postion_x = self.location[1].location[0]
+				location_B_postion_y = self.location[1].location[1]
+				x_distance = location_A_postion_x - location_B_postion_x
+				y_distance = location_A_postion_y - location_B_postion_y
+				self.distance = abs(x_distance) + abs(y_distance)
+				copy_of_distance = self.distance
+				while copy_of_distance > 0:
+					if x_distance > 0:
+						location_A_postion_x -= 1
+						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						copy_of_distance -= 1
+						x_distance -= 1
+						if x_distance > 0:
+							location_B_postion_x += 1
+							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							copy_of_distance -= 1
+							x_distance -= 1
+					if y_distance > 0:
+						location_A_postion_y -= 1
+						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						copy_of_distance -= 1
+						y_distance -= 1
+						if y_distance > 0:
+							location_B_postion_y += 1
+							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							copy_of_distance -= 1
+							y_distance -= 1
+
+					if x_distance < 0:
+						location_A_postion_x += 1
+						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						copy_of_distance -= 1
+						x_distance += 1
+						if x_distance < 0:
+							location_B_postion_x -= 1
+							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							copy_of_distance -= 1
+							x_distance += 1
+					if y_distance < 0:
+						location_A_postion_y += 1
+						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						copy_of_distance -= 1
+						y_distance += 1
+						if y_distance < 0:
+							location_B_postion_y -= 1
+							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							copy_of_distance -= 1
+							y_distance += 1
 
 	def add_roads(self, road):
-		self.roads[road.identity] = road
+		self.destinacions[road.identity] = road
+	
+	def add_road_parts(self, road_part):
+		self.destinacions[road_part.identity] = road_part
+		self.distance += 1
+		
+
 
 
 
@@ -86,58 +150,39 @@ class the_map:
 				adding_space += " "
 		
 		self.map_positions[square.location[0]][square.location[1]] = adding_space + square_string
-
-
-a_map = the_map(25, 17)
-A_position = possition("Ak", 11, 9)
-B_position = possition("Jk", 10, 4)
-C_position = possition("Cf", 3, 13)
-D_position = possition("Ko", 5, 7)
-
-A1_road = possition("##", 10, 9)
-A2_road = possition("##", 9, 9)
-A3_road = possition("##", 8, 9)
-A4_road = possition("##", 7, 9)
-A5_road = possition("##", 6, 9)
-A6_road = possition("##", 6, 8)
-A7_road = possition("##", 5, 8)
-
-A_position.add_roads(A1_road)
-A1_road.add_roads(A_position)
-A1_road.add_roads(A2_road)
-A2_road.add_roads(A1_road)
-A2_road.add_roads(A3_road)
-A3_road.add_roads(A2_road)
-A3_road.add_roads(A4_road)
-A4_road.add_roads(A3_road)
-A4_road.add_roads(A5_road)
-A5_road.add_roads(A4_road)
-A5_road.add_roads(A6_road)
-A6_road.add_roads(A5_road)
-A6_road.add_roads(A7_road)
-A7_road.add_roads(A6_road)
-A7_road.add_roads(D_position)
-D_position.add_roads(A7_road)
-
-
-a_map.add_position(A_position)
-a_map.add_position(B_position)
-a_map.add_position(C_position)
-a_map.add_position(D_position)
-a_map.add_position(A1_road)
-a_map.add_position(A2_road)
-a_map.add_position(A3_road)
-a_map.add_position(A4_road)
-a_map.add_position(A5_road)
-a_map.add_position(A6_road)
-a_map.add_position(A7_road)
-
-print(a_map)
+		
+	def fill_the_road(self, road):
+		for road_part in road.destinacions:
+			self.add_position(road.destinacions[road_part])
 
 
 
 
+location_A = possition("A_l", "location", [11, 6])
+location_B = possition("B_l", "location", [8, 12])
+road_A = possition("A_r", "road", [location_A, location_B])
 
+location_C = possition("C_l", "location", [17, 25])
+location_D = possition("D_l", "location", [1, 17])
+road_B = possition("B_r", "road", [location_C, location_D])
+
+location_E = possition("E_l", "location", [7, 3])
+location_F = possition("F_l", "location", [14, 10])
+road_C = possition("C_r", "road", [location_E, location_F])
+
+A_map = the_map(17, 25)
+
+A_map.fill_the_road(road_A)
+A_map.fill_the_road(road_B)
+A_map.fill_the_road(road_C)
+A_map.add_position(location_A)
+A_map.add_position(location_B)
+A_map.add_position(location_C)
+A_map.add_position(location_E)
+A_map.add_position(location_D)
+A_map.add_position(location_F)
+
+print(A_map)
 
 
 
