@@ -1,12 +1,16 @@
 #from cf_list_dicts import decks
 
 
+#entity is a class represends either the player or the computer
 class entity:
 	def __init__(self, character, starting_position, npc=False):
 		self.character = character
 		self.position = starting_position
 		self.position.entity_ocupation = self
 		self.npc = npc
+	
+	def __repr__(self):
+		return self.character
 	
 	def change_potition(self, new_position):
 		self.position.entity_ocupation = None
@@ -15,20 +19,27 @@ class entity:
 
 
 
-
+#possitions refers to all the available places an entity can move to, the roads and the parts of the roads
 class possition:
 	def __init__(self, identity, type_of, location, autofill_roads=True):
 		self.identity = identity
+		#there are 3 types of possitions, the available square for the player/npc, the roads that connects them and the road parts that composes each rode
 		self.type_of = type_of
+		#depends on the type, location will be a list of two elements, a x and y axis in case of road parts and squarres and whole square classes in case of roads
 		self.location = location
+		#distance is the total number of road parts that connects two locations. this will be used for the recommendation part (find for the computer the faster way to reach the player)
 		self.distance = 0
 		self.destinacions = {}
+		self.alailable_destinacions = []
 		self.entity_ocupation = None
 		self.autofill_roads =  autofill_roads
 		#if position is a road and you don't want to manually add its parts it can happen automatically autoffilling the map distance
 		if self.type_of == "road":
-			for loc in location:
-				loc.add_roads(self)
+			for loc_1 in location:
+				loc_1.add_roads(self)
+				for loc_2 in location:
+					if loc_1 != loc_2:
+						loc_1.alailable_destinacions.append(loc_2)
 			if autofill_roads == True:
 				location_A_postion_x = self.location[0].location[0]
 				location_A_postion_y = self.location[0].location[1]
@@ -84,17 +95,27 @@ class possition:
 	def __repr__(self):
 		return self.type_of[0].upper() + self.type_of[1:] + " " + self.identity
 	
+	def __lt__(self, other):
+		return self.distance < other.distance
+	
 	def add_roads(self, road):
 		self.destinacions[road.identity] = road
 	
 	def add_road_parts(self, road_part):
 		self.destinacions[road_part.identity] = road_part
 		self.distance += 1
-		
+	
+	def get_path(self, location):
+		road_to_use = None
+		for connected_road in self.destinacions:
+			for connected_location in self.destinacions[connected_road].location:
+				if connected_location == location:
+					road_to_use = self.destinacions[connected_road]
+					return road_to_use
 
 
 
-
+#the "graphical interface with x and y axis to insert the map"
 class playing_grid:
 	def __init__(self, x_length, y_length):
 		self.number_of_digits_for_spacing = 0
@@ -149,6 +170,8 @@ class playing_grid:
 		
 	def add_position(self, square):
 		square_string = square.identity
+		if square.type_of == "road_part":
+			square_string = "<>"
 		if square.entity_ocupation is not None:
 			square_string = square.entity_ocupation.character
 		if len(square_string) > self.number_of_digits_for_spacing:
@@ -166,6 +189,7 @@ class playing_grid:
 			self.add_position(road.destinacions[road_part])
 
 
+#the map of the game together with the functionality to interact with it
 class the_map:
 	def __init__(self, playing_area):
 		self.playing_area = playing_area
