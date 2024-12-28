@@ -58,7 +58,26 @@ def fibonacci2(n):
 					
 					
 					
-					
+
+
+
+Order of functions:
+	playGame()
+		set_up()
+			Player  #class is setting up for the cards
+-----				#need class for the map
+		computer_set_up()
+			Player  #class is setting up for the cards
+-----				#need class for the map
+		start_turn(first, second)
+			computer_pick_a_card()/pick_a_card()
+			if replace_card()
+				continue
+			else:
+				computer_pick_a_card()/pick_a_card()
+				fight()
+			
+		start_turn(second, first)
 					
 					
 					

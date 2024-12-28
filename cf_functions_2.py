@@ -3,20 +3,12 @@ from cf_list_dicts import A_map
 from math import inf
 from heapq import heappop, heappush
 
-random_character = entity("*", A_map.locations[4])
-random_character_2 = entity("$", A_map.locations[1], True)
-random_npc_character = entity("%", A_map.locations[3], True)
-A_map.add_entity(random_character)
-A_map.add_entity(random_character_2)
-A_map.add_entity(random_npc_character)
-A_map.create_map()
-
 def lets_move(character, given_map):
 	where = None
 	available_options = []
 	for i in range(len(character.position.alailable_destinacions)):
 		available_options.append(str(i))
-	print(given_map)
+	#print(given_map)
 	print("You are at {} (x={}, y={}).".format(character.position, character.position.location[0], character.position.location[1]))
 	for i in range(len(character.position.alailable_destinacions)):
 		if character.position.alailable_destinacions[i].entity_ocupation is not None:
@@ -30,6 +22,7 @@ def lets_move(character, given_map):
 		Fight(character, character.position.alailable_destinacions[int(where)].entity_ocupation)
 	else:
 		given_map.move_entity(character, character.position.alailable_destinacions[int(where)])
+		
 
 def heuristic(start, goal):
 	x_distance = abs(start.location[0] - goal.location[0])
@@ -78,12 +71,7 @@ def Fight(attacking_entity, defending_entity):
 	pass
 
 
-stop_loop = ""
-while stop_loop == "":
-	lets_move(random_character, A_map)
-	#print(find_fastest_path_to_player(A_map, random_npc_character, random_character))
-	npc_move(random_npc_character, A_map)
-	stop_loop = input("Continue moving? Yes=press Enter/No=type anything, then press Enter")
+
 
 
 

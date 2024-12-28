@@ -2,33 +2,52 @@ import time
 from cf_list_dicts import decks, attacker_message, ton_of_space
 from cf_classes import Card, Player
 from random import randint
+from cf_functions_2 import lets_move
+from cf_classes_2 import entity
+from cf_list_dicts import A_map
 
 
 # here the game starts and ends if any player reaches 0 hp. *The start_turn function returns a bool that changes if the upper condition changes.
 def playGame(computerPlay):
-	if computerPlay:
-		who_playes_first = input("Do you want to play first or second?\nType here '1' for first or '2' for second: ")
-		while who_playes_first not in ['1', '2']:
-			who_playes_first = input("Invalid pick again: ")
-		if who_playes_first == '1':
-			player_1 = set_up(1)
-			player_2 = computer_set_up(2, player_1.player_name)
+	how_many_players = input("How many players are playing?: ")
+	while (int(how_many_players) < 1 and int(how_many_players) > len(A_map.locations)/2) or how_many_players.isdigit() is False:
+		how_many_players = input("Incorrect input, try again. How many players are playing? (type from 1 to {}): ".format(len(A_map.locations)/2))
+	players = {}
+	player_names = []
+	for i in range(1, int(how_many_players) + 1):
+		is_computer = input("Player {} is a computer? (y/n): ".format(i))
+		while is_computer.lower() not in ['y', 'n']:
+			is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(i))
+		if is_computer == 'y':
+			players["Player " + str(i)] = [computer_set_up(i, player_names), entity(str(i), A_map.locations[randint(0, len(A_map.locations) - 1)], True)]
 		else:
-			player_1 = computer_set_up(1)
-			player_2 = set_up(2, player_1.player_name)
-	else:
-		player_1 = set_up(1)
-		player_2 = set_up(2, player_1.player_name)
+			players["Player " + str(i)] = [set_up(i, player_names), entity(str(i), A_map.locations[randint(0, len(A_map.locations) - 1)])]
+		A_map.add_entity(players["Player " + str(i)][1])
+		player_names.append(players["Player " + str(i)][0].player_name)
+
 	print("")
-	print(player_1)
-	print(player_2)
+	for player in players:
+		print(players[player][0])
+	A_map.create_map()
 	print("")
 
+	#Since I am adding multyple players the condition for this will change
 	game_end = False
-	while not game_end:
-		game_end = start_turn(player_1, player_2)
-		if not game_end:
-			game_end = start_turn(player_2, player_1)
+	choose_your_action = None
+	action = 1
+	for player in players:
+		while action != 3:
+			print(A_map)
+			choose_your_action = input("{}\nAction {}. Do you want to move or attack? 1/2: ".format(players[player][0].player_name, action))
+			while choose_your_action not in ['1', '2']:
+				choose_your_action = input("Wrong input trty again: ")
+			if choose_your_action == '1':
+				lets_move(players[player][1], A_map)
+			else:
+				game_end = start_turn(players[player][0], player_2)
+				if not game_end:
+					game_end = start_turn(player_2, players[player][0])
+			action += 1
 	to_continue()
 
 
@@ -48,12 +67,11 @@ def to_continue(auto_or_manual=0):
 
 
 # function that will get repeated for each plater, accepts the number corresponting to the current player and return a completed player object with randomized deck, name, hand and hp
-def set_up(whos_turn, player_1st=None):
+def set_up(whos_turn, player_names_list):
 	#recive the name from the player
 	name = input("\nPlayer {} how do you want to be called?: ".format(whos_turn))
-	if player_1st !=None:
-		while name == player_1st:
-			name = input("player 1 already has this name, pick a difrent one: ")
+	while name in player_names_list:
+		name = input("Another player already has this name, pick a difrent one: ")
 	print("\nHello {}!!!".format(name))
 
 	#upgrade can now add more decks by just adding them on the cf_list_dicks
@@ -384,14 +402,15 @@ def computer_hand(players_hand, player_initiative, players_hp, cards_left_ondeck
 	
 	
 #copy of setup for computer
-def computer_set_up(whos_turn, player_1st=None):
+def computer_set_up(whos_turn, player_names_list):
 	#recive the name for the computer
-	name = input("\nPlayer {} is the computer! Do you want to give it a name?\n(if not leave blank and press ENTER it will be called 'Computer'): ".format(whos_turn))
+	name = input("\nPlayer {} is a computer! Do you want to give it a name?\n(if not leave blank and press ENTER it will be called 'Computer (n)'): ".format(whos_turn))
 	if name == "":
 		name = "Computer"
-	if player_1st !=None:
-		while name == player_1st:
-			name = input("player 1 already has this name, pick a difrent one: ")
+		if name in player_names_list:
+			name += " " + str(player_names_list.count(name) + 1)
+	while name in player_names_list:
+		name = input("Another player already has this name, pick a difrent one: ")
 
 	#upgrade can now add more decks by just adding them on the cf_list_dicks
 	print("\nNow pick a deck for the computer")
