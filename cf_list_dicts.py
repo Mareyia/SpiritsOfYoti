@@ -1,15 +1,15 @@
 from cf_classes import Card
 from cf_classes_2 import possition, playing_grid, the_map
 
-A_map = the_map(playing_grid(17, 25))
+A_map = the_map(playing_grid(17, 18))
 
 A_map.add_location(possition("A", "location", [11, 6]))
 A_map.add_location(possition("B", "location", [8, 12]))
-A_map.add_location(possition("C", "location", [17, 25]))
-A_map.add_location(possition("D", "location", [1, 17]))
+A_map.add_location(possition("C", "location", [17, 18]))
+A_map.add_location(possition("D", "location", [1, 14]))
 A_map.add_location(possition("E", "location", [7, 3]))
 A_map.add_location(possition("F", "location", [14, 10]))
-A_map.add_location(possition("G", "location", [2, 24]))
+A_map.add_location(possition("G", "location", [2, 17]))
 
 A_map.add_road(possition("A", "road", [A_map.locations[0], A_map.locations[1]]))
 A_map.add_road(possition("B", "road", [A_map.locations[2], A_map.locations[3]]))

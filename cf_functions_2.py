@@ -7,22 +7,23 @@ def lets_move(character, given_map):
 	where = None
 	available_options = []
 	for i in range(len(character.position.alailable_destinacions)):
+		if character.position.alailable_destinacions[i].entity_ocupation is not None:
+			continue
 		available_options.append(str(i))
 	#print(given_map)
 	print("You are at {} (x={}, y={}).".format(character.position, character.position.location[0], character.position.location[1]))
+	counters = {}
+	counter = 0
 	for i in range(len(character.position.alailable_destinacions)):
 		if character.position.alailable_destinacions[i].entity_ocupation is not None:
-			print("To attack {} on {} using {} with {} length type '{}'".format(character.position.alailable_destinacions[i].entity_ocupation, character.position.alailable_destinacions[i], character.position.get_path(character.position.alailable_destinacions[i]), character.position.get_path(character.position.alailable_destinacions[i]).distance, i))
 			continue
-		print("For {} using {} with {} length type '{}'".format(character.position.alailable_destinacions[i], character.position.get_path(character.position.alailable_destinacions[i]), character.position.get_path(character.position.alailable_destinacions[i]).distance, i))
+		counters[counter] = i
+		print("For {} using {} with {} length type '{}'".format(character.position.alailable_destinacions[i], character.position.get_path(character.position.alailable_destinacions[i]), character.position.get_path(character.position.alailable_destinacions[i]).distance, counter))
+		counter += 1
 	where = input("Choose a destination: ")
 	while where not in available_options:
 		where = input("Wrong inputm, try again: ")
-	if character.position.alailable_destinacions[int(where)].entity_ocupation is not None:
-		Fight(character, character.position.alailable_destinacions[int(where)].entity_ocupation)
-	else:
-		given_map.move_entity(character, character.position.alailable_destinacions[int(where)])
-		
+	given_map.move_entity(character, character.position.alailable_destinacions[counters[int(where)]])
 
 def heuristic(start, goal):
 	x_distance = abs(start.location[0] - goal.location[0])
