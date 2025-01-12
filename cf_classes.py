@@ -144,3 +144,68 @@ class Player:
 hp: {}
 cards left on deck: {}""".format(self.player_name, self.hp, len(self.ready_deck)))
 		return is_dead, no_cards_left
+
+
+class Menu_options:
+	def __init__(self, menu_title, option_number="", previous_menu=None, menu_sub_title="", title_cosmetics="", sub_title_cosmetics="", activatable=None):
+		self.options = {}
+		self.menu_title = menu_title
+		self.menu_sub_title = menu_sub_title
+		if self.menu_sub_title == "":
+			self.menu_sub_title = self.menu_title
+		self.title_cosmetics = title_cosmetics
+		self.sub_title_cosmetics = sub_title_cosmetics
+		self.option_number = option_number
+		#activatble needs to handle the start of the game
+		self.activatable = activatable
+		#previous_menu neeeds to handle the exit as-well
+		self.previous_menu = previous_menu
+	
+	def __repr__(self):
+		representation = "\n" + self.title_cosmetics + " " + self.menu_title + " " + self.title_cosmetics + "\n"
+		if self.menu_sub_title != "" and self.menu_sub_title != self.menu_title:
+			representation += "\n" + self.sub_title_cosmetics + " " + self.menu_sub_title + " " + self.sub_title_cosmetics + "\n"
+		return representation
+	
+	def add_option(self, option, option_class):
+		self.options[option] = option_class
+	
+	#returns the numbers for every available menu or sub-menu option
+	def get_options(self):
+		return [self.options[option].option_number for option in self.options]
+	
+	def selecting_option(self):
+		print(self)
+		for option in self.options:
+			print(option + " " + self.options[option].menu_title)
+		number_of_option = input("\nType here your option and then press enter: ")
+		while number_of_option not in self.get_options():
+			number_of_option = input("Invalid Input, try again: ")
+		return self.options[number_of_option]
+	
+	#def activating_option(self):
+	#	player_selection = self.selecting_option()
+	#	if self.options[0].menu_title == Ex
+
+class All_Menu:
+	def __init__(self, starting_menu):
+		self.starting_menu = starting_menu
+		self.current_menu = starting_menu
+	
+	def using_menu(self):
+		if self.current_menu == None:
+			print("Bye bye hope you had funnnn, or dont... I actually don't really care.")
+		else:
+			if self.current_menu.activatable == None:
+				player_selection = self.current_menu.selecting_option()
+				if player_selection.option_number == '0':
+					self.current_menu = self.current_menu.previous_menu
+				else:
+					self.current_menu = player_selection
+			else:
+				print("Playing the game here")
+				self.current_menu = self.starting_menu
+			self.using_menu()
+			
+		
+		

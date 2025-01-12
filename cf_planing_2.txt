@@ -78,6 +78,21 @@ Order of functions:
 				fight()
 			
 		start_turn(second, first)
+		
+
+campain:
+1 player agains 3 computers
+		5
+		7
+
+
+game modes:
+
+all vs all
+players vs computers
+custom teams
+
+
 					
 					
 					

@@ -3,7 +3,7 @@ from cf_list_dicts import decks, attacker_message, ton_of_space
 from cf_classes import Card, Player
 from random import randint
 from cf_functions_2 import lets_move, npc_move
-from cf_classes_2 import entity
+from cf_classes_2 import Entity
 from cf_list_dicts import A_map
 
 

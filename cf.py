@@ -49,15 +49,18 @@
 # "https://en.wikipedia.org/wiki/Unmatched_(board_game)" witch my hole project is based on
 #
 
-from cf_list_dicts import instructions
+from cf_list_dicts import instructions, menuuuu
 from cf_functions import playGame
 from cf_functions import to_continue
 
+print("\n=========================================\n========= Welcome to Card fight =========\n=========================================")
+menuuuu.using_menu()
+
 
 # A terminal main menu giving you 3 options and looping on them until you press the exit option that breaks the loop 
-menu = None #variable for the selected option, the program just started so the '' corresponds to the choise still hasn't given
+menu = '0' #variable for the selected option, the program just started so the '' corresponds to the choise still hasn't given
 #the loop. the option 0 will break the loop aka to exit the game
-print("\n=========================================\n========= Welcome to Card fight =========\n=========================================")
+
 while menu!='0':
 	print("\n\tMain Menu\n")
 	print("Type '1' to start the game (local human vs human),\ntype '2' to play against the computer,\ntype '3' for instructions\n\nor type '0' to exit\n")

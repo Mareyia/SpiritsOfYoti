@@ -2,7 +2,7 @@
 
 
 #entity is a class represends either the player or the computer
-class entity:
+class Entity:
 	def __init__(self, character, starting_position, npc=False):
 		self.character = character
 		self.position = starting_position
@@ -20,7 +20,7 @@ class entity:
 
 
 #possitions refers to all the available places an entity can move to, the roads and the parts of the roads
-class possition:
+class Possition:
 	def __init__(self, identity, type_of, location, autofill_roads=True):
 		self.identity = identity
 		#there are 3 types of possitions, the available square for the player/npc, the roads that connects them and the road parts that composes each rode
@@ -52,43 +52,43 @@ class possition:
 				while copy_of_distance > 0:
 					if x_distance > 0:
 						location_A_postion_x -= 1
-						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
 						copy_of_distance -= 1
 						x_distance -= 1
 						if x_distance > 0:
 							location_B_postion_x += 1
-							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
 							copy_of_distance -= 1
 							x_distance -= 1
 					if y_distance > 0:
 						location_A_postion_y -= 1
-						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
 						copy_of_distance -= 1
 						y_distance -= 1
 						if y_distance > 0:
 							location_B_postion_y += 1
-							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
 							copy_of_distance -= 1
 							y_distance -= 1
 
 					if x_distance < 0:
 						location_A_postion_x += 1
-						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
 						copy_of_distance -= 1
 						x_distance += 1
 						if x_distance < 0:
 							location_B_postion_x -= 1
-							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
 							copy_of_distance -= 1
 							x_distance += 1
 					if y_distance < 0:
 						location_A_postion_y += 1
-						self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
+						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
 						copy_of_distance -= 1
 						y_distance += 1
 						if y_distance < 0:
 							location_B_postion_y -= 1
-							self.destinacions[copy_of_distance] = possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
+							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
 							copy_of_distance -= 1
 							y_distance += 1
 
@@ -116,7 +116,7 @@ class possition:
 
 
 #the "graphical interface with x and y axis to insert the map"
-class playing_grid:
+class Playing_grid:
 	def __init__(self, x_length, y_length):
 		self.number_of_digits_for_spacing = 0
 		self.string_for_spacing = ""
@@ -190,7 +190,7 @@ class playing_grid:
 
 
 #the map of the game together with the functionality to interact with it
-class the_map:
+class The_map:
 	def __init__(self, playing_area):
 		self.playing_area = playing_area
 		self.locations = []
@@ -252,7 +252,7 @@ class the_map:
 ##### Below lies two classes with methods that creates a massive tree with millions of nodes that represents all the card combinations that can happen; with the perpose of making an ultimate difficulty for the computer that will know exactly what will be the best move in any case.
 ##### The creation and traversing of this tree even with less than 12 cards is enouph to fill 16gb of ram and freeze the computer, so this methode is not recomended and further development has been terminated.
 
-class move:
+class Move:
 	def __init__(self, card, i=0):
 		self.move = card
 		self.moves = []
@@ -271,14 +271,14 @@ class move:
 				the_move.traverse(print_helper)
 
 
-class move_combinations:
+class Move_combinations:
 	def __init__(self, deck):
 		self.first_moves = {}
 		self.deck = deck
 		
 	def adding_first_moves(self):
 		for i in range(len(self.deck)):
-			self.first_moves[i] = move(self.deck[i], i)
+			self.first_moves[i] = Move(self.deck[i], i)
 			self.adding_rest_of_the_moves(self.deck, self.first_moves[i])
 
 
@@ -311,6 +311,6 @@ class move_combinations:
 ##### Proccesor: Intel® Core™ i5-4690K CPU @ 3.50GHz (4-cores/4-threds)
 ##### Memory: 16GB 1333MHz (4x4GB)
 
-#massive_tree_with_card_game_move_combinations = move_combinations(decks["Shit"])
+#massive_tree_with_card_game_move_combinations = Move_combinations(decks["Shit"])
 #massive_tree_with_card_game_move_combinations.adding_first_moves()
 #massive_tree_with_card_game_move_combinations.traverse_everything()
