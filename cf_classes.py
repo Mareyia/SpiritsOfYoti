@@ -181,7 +181,27 @@ class Menu_options:
 		number_of_option = input("\nType here your option and then press enter: ")
 		while number_of_option not in self.get_options():
 			number_of_option = input("Invalid Input, try again: ")
-		return self.options[number_of_option]
+		return self.options[number_of_option], int(number_of_option)
+		
+	def difficulty_genaretion(self, user_input, all_maps):
+		number_of_players_and_positions = {}
+		the_chosen_map = all_maps[user_input]
+		number_of_players_and_positions[0] = 0
+		number_of_players_and_positions[1] = 1
+		number_of_players_and_positions[2] = 2
+		dificulty = 'Easy'
+		if user_input == 2 or user_input == 3:
+			number_of_players_and_positions[3] = 3
+			number_of_players_and_positions[4] = 4
+			dificulty = 'Normal'
+		if user_input == 3:
+			number_of_players_and_positions[5] = 5
+			number_of_players_and_positions[6] = 6
+			dificulty = 'Hard'
+		return dificulty, number_of_players_and_positions, the_chosen_map
+	
+	def map_selection(self):
+		pass
 	
 	#def activating_option(self):
 	#	player_selection = self.selecting_option()
@@ -192,20 +212,23 @@ class All_Menu:
 		self.starting_menu = starting_menu
 		self.current_menu = starting_menu
 	
-	def using_menu(self):
+	def using_menu(self, game_function, all_maps, player_selection=None, player_selection_number=None):
 		if self.current_menu == None:
 			print("Bye bye hope you had funnnn, or dont... I actually don't really care.")
 		else:
 			if self.current_menu.activatable == None:
-				player_selection = self.current_menu.selecting_option()
+				player_selection, player_selection_number = self.current_menu.selecting_option()
 				if player_selection.option_number == '0':
 					self.current_menu = self.current_menu.previous_menu
 				else:
 					self.current_menu = player_selection
 			else:
-				print("Playing the game here")
+				dificulty_mode, players_and_positions, apropriet_map = self.current_menu.difficulty_genaretion(player_selection_number, all_maps)
+				game_function(self.current_menu.previous_menu.menu_sub_title, dificulty_mode, players_and_positions, apropriet_map)
 				self.current_menu = self.starting_menu
-			self.using_menu()
-			
+			self.using_menu(game_function, all_maps, player_selection, player_selection_number)
+	
+
+
 		
 		

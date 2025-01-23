@@ -7,7 +7,7 @@ main_menu.add_option("2", Menu_options("Custom Match", "2", main_menu, "Custom M
 main_menu.add_option("3", Menu_options("Instructions", "3", main_menu, "Instructions"))
 main_menu.add_option("0", Menu_options("Exit", "0"))
 main_menu.options["1"].add_option("1", Menu_options("Easy", "1", main_menu.options["1"], "", "", "", True))
-main_menu.options["1"].add_option("2", Menu_options("Medium", "2", main_menu.options["1"],  "", "", "", True))
+main_menu.options["1"].add_option("2", Menu_options("Normal", "2", main_menu.options["1"],  "", "", "", True))
 main_menu.options["1"].add_option("3", Menu_options("Hard", "3", main_menu.options["1"],  "", "", "", True))
 main_menu.options["1"].add_option("0", Menu_options("Back", "0"))
 main_menu.options["2"].add_option("1", Menu_options("All vs All", "1", main_menu.options["2"]))
@@ -38,6 +38,9 @@ A_map.add_road(Possition("G", "road", [A_map.locations[2], A_map.locations[5]]))
 A_map.add_road(Possition("H", "road", [A_map.locations[3], A_map.locations[1]]))
 A_map.add_road(Possition("I", "road", [A_map.locations[2], A_map.locations[6]]))
 A_map.add_road(Possition("J", "road", [A_map.locations[1], A_map.locations[6]]))
+
+#position 0, 1 and 2 should be the easy, normal and hard map
+maps = [A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map]
 
 punch_of_focus = Card("Punch of focus", "attack", 2)
 kick_of_fury = Card("Kick of fury", "attack", 3)

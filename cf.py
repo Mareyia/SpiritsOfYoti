@@ -49,12 +49,12 @@
 # "https://en.wikipedia.org/wiki/Unmatched_(board_game)" witch my hole project is based on
 #
 
-from cf_list_dicts import instructions, menuuuu
+from cf_list_dicts import instructions, menuuuu, maps
 from cf_functions import playGame
 from cf_functions import to_continue
 
 print("\n=========================================\n========= Welcome to Card fight =========\n=========================================")
-menuuuu.using_menu()
+menuuuu.using_menu(playGame, maps)
 
 
 # A terminal main menu giving you 3 options and looping on them until you press the exit option that breaks the loop 

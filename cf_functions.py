@@ -4,29 +4,39 @@ from cf_classes import Card, Player
 from random import randint
 from cf_functions_2 import lets_move, npc_move
 from cf_classes_2 import Entity
-from cf_list_dicts import A_map
+#from cf_list_dicts import A_map
 
 
 # here the game starts and ends if any player reaches 0 hp. *The start_turn function returns a bool that changes if the upper condition changes.
-def playGame(computerPlay):
-	how_many_players = input("How many players are playing?: ")
-	while (int(how_many_players) < 1 and int(how_many_players) > len(A_map.locations)/2) or how_many_players.isdigit() is False:
-		how_many_players = input("Incorrect input, try again. How many players are playing? (type from 1 to {}): ".format(len(A_map.locations)/2))
-	#players is an array of every player, every player has a list of two classes, 0 for the card fight and 1 for the map movement 
+def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None, A_map=None):
 	players = {}
 	player_names = []
-	for i in range(1, int(how_many_players) + 1):
-		is_computer = input("Player {} is a computer? (y/n): ".format(i))
-		# list_of_available_locations lists the locations that are not selected by other entities
-		list_of_available_locations = [location for location in A_map.locations if location.entity_ocupation == None]
-		while is_computer.lower() not in ['y', 'n']:
-			is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(i))
-		if is_computer == 'y':
-			players["Player " + str(i)] = [computer_set_up(i, player_names), entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)], True)]
-		else:
-			players["Player " + str(i)] = [set_up(i, player_names), entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)])]
-		A_map.add_entity(players["Player " + str(i)][1])
-		player_names.append(players["Player " + str(i)][0].player_name)
+
+	#if game mode is campaign
+	if game_mode == 'Campaing':
+		pass
+
+	#if game mode is costum
+	else:
+		how_many_players = input("How many players are playing?: ")
+		while (int(how_many_players) < 1 and int(how_many_players) > len(A_map.locations)/2) or how_many_players.isdigit() is False:
+			how_many_players = input("Incorrect input, try again. How many players are playing? (type from 1 to {}): ".format(len(A_map.locations)/2))
+		#players is an array of every player, every player has a list of two classes, 0 for the card fight and 1 for the map movement 
+
+		for i in range(1, int(how_many_players) + 1):
+			is_computer = input("Player {} is a computer? (y/n): ".format(i))
+			# list_of_available_locations lists the locations that are not selected by other entities
+			list_of_available_locations = [location for location in A_map.locations if location.entity_ocupation == None]
+			while is_computer.lower() not in ['y', 'n']:
+				is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(i))
+			if is_computer == 'y':
+				players["Player " + str(i)] = [computer_set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)], True)]
+			else:
+				players["Player " + str(i)] = [set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)])]
+			A_map.add_entity(players["Player " + str(i)][1])
+			player_names.append(players["Player " + str(i)][0].player_name)
+
+
 
 	print("")
 	for player in players:
@@ -37,11 +47,11 @@ def playGame(computerPlay):
 	#Since I am adding multyple players the condition for this will change
 	game_end = False
 	while game_end == False:
-		actuall_turn(players)
+		actuall_turn(players, A_map)
 	to_continue()
 
 
-def actuall_turn(all_player):
+def actuall_turn(all_player, A_map):
 	for one_player in all_player:
 		choose_your_action = None
 		action = 1
@@ -59,7 +69,7 @@ def actuall_turn(all_player):
 
 			if all_player[one_player][0].computer == True:
 				print(A_map)
-				print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name), action)
+				print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name, action))
 				to_continue(3)
 				if len(adjecent_to_npc) == 0:
 					npc_move(all_player[one_player][1], A_map)
