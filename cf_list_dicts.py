@@ -27,6 +27,7 @@ A_map.add_location(Possition("D", "location", [1, 14]))
 A_map.add_location(Possition("E", "location", [7, 3]))
 A_map.add_location(Possition("F", "location", [14, 10]))
 A_map.add_location(Possition("G", "location", [2, 17]))
+A_map.add_location(Possition("H", "location", [16, 2]))
 
 A_map.add_road(Possition("A", "road", [A_map.locations[0], A_map.locations[1]]))
 A_map.add_road(Possition("B", "road", [A_map.locations[2], A_map.locations[3]]))
@@ -38,6 +39,10 @@ A_map.add_road(Possition("G", "road", [A_map.locations[2], A_map.locations[5]]))
 A_map.add_road(Possition("H", "road", [A_map.locations[3], A_map.locations[1]]))
 A_map.add_road(Possition("I", "road", [A_map.locations[2], A_map.locations[6]]))
 A_map.add_road(Possition("J", "road", [A_map.locations[1], A_map.locations[6]]))
+A_map.add_road(Possition("K", "road", [A_map.locations[7], A_map.locations[4]]))
+A_map.add_road(Possition("L", "road", [A_map.locations[7], A_map.locations[1]]))
+A_map.add_road(Possition("M", "road", [A_map.locations[7], A_map.locations[2]]))
+A_map.add_road(Possition("N", "road", [A_map.locations[7], A_map.locations[0]]))
 
 #position 0, 1 and 2 should be the easy, normal and hard map
 maps = [A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map]

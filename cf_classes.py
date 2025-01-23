@@ -186,18 +186,22 @@ class Menu_options:
 	def difficulty_genaretion(self, user_input, all_maps):
 		number_of_players_and_positions = {}
 		the_chosen_map = all_maps[user_input]
-		number_of_players_and_positions[0] = 0
-		number_of_players_and_positions[1] = 1
-		number_of_players_and_positions[2] = 2
+		#this is the players variable
+		number_of_players_and_positions[1] = 7
+		number_of_players_and_positions[2] = 0
+		number_of_players_and_positions[3] = 1
+		number_of_players_and_positions[4] = 2
 		dificulty = 'Easy'
 		if user_input == 2 or user_input == 3:
-			number_of_players_and_positions[3] = 3
-			number_of_players_and_positions[4] = 4
+			number_of_players_and_positions[5] = 3
+			number_of_players_and_positions[6] = 4
 			dificulty = 'Normal'
 		if user_input == 3:
-			number_of_players_and_positions[5] = 5
-			number_of_players_and_positions[6] = 6
+			number_of_players_and_positions[7] = 5
+			number_of_players_and_positions[8] = 6
 			dificulty = 'Hard'
+		
+		
 		return dificulty, number_of_players_and_positions, the_chosen_map
 	
 	def map_selection(self):

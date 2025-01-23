@@ -14,7 +14,13 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 
 	#if game mode is campaign
 	if game_mode == 'Campaing':
-		pass
+		for player in players_and_positions:
+			if player == 1:
+				players["Player " + str(player)] = [set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]])]
+			else:
+				players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]])]
+			A_map.add_entity(players["Player " + str(player)][1])
+			player_names.append(players["Player " + str(player)][0].player_name)
 
 	#if game mode is costum
 	else:
@@ -57,42 +63,59 @@ def actuall_turn(all_player, A_map):
 		action = 1
 		while action != 3:
 			#find the adjecent entities for both npcs and players
-			adjecent_to_player = []
-			adjecent_to_npc = []
+			adjecent_to_entity = []
 			for destination in all_player[one_player][1].position.alailable_destinacions:
 				if destination.entity_ocupation != None:
-					if destination.entity_ocupation.npc:
-						adjecent_to_player.append(destination.entity_ocupation)
-					else:
-						adjecent_to_npc.append(destination.entity_ocupation)
+					adjecent_to_entity.append(destination.entity_ocupation)
 
 
 			if all_player[one_player][0].computer == True:
 				print(A_map)
 				print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name, action))
 				to_continue(3)
-				if len(adjecent_to_npc) == 0:
+				if len(adjecent_to_entity) == 0:
 					npc_move(all_player[one_player][1], A_map)
 					print(A_map)
 					to_continue()
-				elif len(adjecent_to_npc) == 1:
-					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_npc[0].character)][0])
+				elif len(adjecent_to_entity) == 1:
+					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[0].character)][0])
 				else:
-					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_npc[randint(0, len(adjecent_to_npc) - 1)].character)][0])
+					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[randint(0, len(adjecent_to_entity) - 1)].character)][0])
 			else:
 				print(A_map)
-				choose_your_action = input("{}\nAction {}. Do you want to move or attack? 1/2: ".format(all_player[one_player][0].player_name, action))
-				while choose_your_action not in ['1', '2']:
-					choose_your_action = input("Wrong input trty again: ")
+				available_options = []
+				for i in range(len(all_player[one_player][1].position.alailable_destinacions)):
+					if all_player[one_player][1].position.alailable_destinacions[i].entity_ocupation is not None:
+						continue
+					available_options.append(str(i))
+				
+				#if there are no locations available to move, it also means that you are surronded by entities
+				if len(available_options) > 0:
+					#if there are no enemies to attack means there are only location to go too and freendly entities adjecent to you
+					if len(adjecent_to_entity) == 0:
+						choose_your_action = '1'
+						print("No enemies around to attack")
+					else:
+						choose_your_action = input("{}\nYou are at {} (x={}, y={})\nAction {}. Do you want to move or attack? 1/2: ".format(all_player[one_player][0].player_name, all_player[one_player][1].position, all_player[one_player][1].position.location[0], all_player[one_player][1].position.location[1], action))
+						while choose_your_action not in ['1', '2']:
+							choose_your_action = input("Wrong input trty again: ")
+				else:
+					choose_your_action = '2'
+					print("You are surrounded, can't move!")
+				
+				
+
+					 
+				
 				if choose_your_action == '1':
 					lets_move(all_player[one_player][1], A_map)
 				else:
-					for i in range(1, len(adjecent_to_player) + 1):
-						print("Type '{}' for {} in {} at {}".format(i, adjecent_to_player[i - 1], adjecent_to_player[i - 1].position, adjecent_to_player[i - 1].position.location)) 
+					for i in range(1, len(adjecent_to_entity) + 1):
+						print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_to_entity[i - 1])][0].player_name, adjecent_to_entity[i - 1].position, adjecent_to_entity[i - 1].position.location)) 
 					choose_your_enemy = input("Who do you want to attack?: ")
-					while choose_your_enemy not in [str(num_of_option) for num_of_option in range(1, len(adjecent_to_player) + 1)]:
+					while choose_your_enemy not in [str(num_of_option) for num_of_option in range(1, len(adjecent_to_entity) + 1)]:
 						 choose_your_enemy = input("Invalid option, try again: ")
-					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_player[int(choose_your_enemy) - 1].character)][0])
+					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[int(choose_your_enemy) - 1].character)][0])
 					#if not game_end:
 					#	game_end = start_turn(player_2, all_player[one_player][0])
 			action += 1
@@ -454,8 +477,11 @@ def computer_set_up(whos_turn, player_names_list):
 	name = input("\nPlayer {} is a computer! Do you want to give it a name?\n(if not leave blank and press ENTER it will be called 'Computer (n)'): ".format(whos_turn))
 	if name == "":
 		name = "Computer"
-		if name in player_names_list:
-			name += " " + str(whos_turn)
+		computer_number = 1
+		while name in player_names_list:
+			computer_number += 1
+			name = "Computer"
+			name += " " + str(computer_number)
 	while name in player_names_list:
 		name = input("Another player already has this name, pick a difrent one: ")
 

@@ -10,19 +10,19 @@ def lets_move(character, given_map):
 			continue
 		available_options.append(str(i))
 	#print(given_map)
-	print("You are at {} (x={}, y={}).".format(character.position, character.position.location[0], character.position.location[1]))
+	#print("You are at {} (x={}, y={}).".format(character.position, character.position.location[0], character.position.location[1]))
 	counters = {}
 	counter = 0
 	for i in range(len(character.position.alailable_destinacions)):
 		if character.position.alailable_destinacions[i].entity_ocupation is not None:
 			continue
-		counters[counter] = i
+		counters[str(counter)] = i
 		print("For {} using {} with {} length type '{}'".format(character.position.alailable_destinacions[i], character.position.get_path(character.position.alailable_destinacions[i]), character.position.get_path(character.position.alailable_destinacions[i]).distance, counter))
 		counter += 1
 	where = input("Choose a destination: ")
-	while where not in available_options:
+	while where not in counters.keys():
 		where = input("Wrong inputm, try again: ")
-	given_map.move_entity(character, character.position.alailable_destinacions[counters[int(where)]])
+	given_map.move_entity(character, character.position.alailable_destinacions[counters[where]])
 
 def heuristic(start, goal):
 	x_distance = abs(start.location[0] - goal.location[0])
