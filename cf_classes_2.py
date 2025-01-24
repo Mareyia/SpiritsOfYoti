@@ -16,6 +16,10 @@ class Entity:
 		self.position.entity_ocupation = None
 		self.position = new_position
 		self.position.entity_ocupation = self
+	
+	def remove_from_any_position(self):
+		self.position.entity_ocupation = None
+		self.position = None
 
 
 
@@ -224,6 +228,11 @@ class The_map:
 				
 	def move_entity(self, entity, position):
 		entity.change_potition(position)
+		self.update_map()
+	
+	def remove_entity(self, entity):
+		entity.remove_from_any_position()
+		self.entities.remove(entity)
 		self.update_map()
 
 

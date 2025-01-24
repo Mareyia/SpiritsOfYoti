@@ -140,9 +140,9 @@ class Player:
 			if len(self.hand) == 0:
 				no_cards_left = True
 		print("""
-{}'s turn
+{}
 hp: {}
-cards left on deck: {}""".format(self.player_name, self.hp, len(self.ready_deck)))
+cards left on deck: {}""".format(self, self.hp, len(self.ready_deck)))
 		return is_dead, no_cards_left
 
 

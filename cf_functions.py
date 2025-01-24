@@ -11,6 +11,7 @@ from cf_classes_2 import Entity
 def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None, A_map=None):
 	players = {}
 	player_names = []
+	
 
 	#if game mode is campaign
 	if game_mode == 'Campaing':
@@ -53,78 +54,117 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 	#Since I am adding multyple players the condition for this will change
 	game_end = False
 	while game_end == False:
-		actuall_turn(players, A_map)
+		game_end = actuall_turn(players, A_map)
 	to_continue()
 
 
 def actuall_turn(all_player, A_map):
+	number_of_alive_player = len([every_alive_entity for every_alive_entity in A_map.entities if every_alive_entity.position is not None]) 
 	for one_player in all_player:
-		choose_your_action = None
-		action = 1
-		while action != 3:
-			#find the adjecent entities for both npcs and players
-			adjecent_to_entity = []
-			for destination in all_player[one_player][1].position.alailable_destinacions:
-				if destination.entity_ocupation != None:
-					adjecent_to_entity.append(destination.entity_ocupation)
+		print(all_player[one_player][1])
+		#if there is only one player alive the game ends
+		print(number_of_alive_player, A_map.entities)
+		if number_of_alive_player == 1:
+			print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player ", str(A_map.entities[0])][0]))
+			return True
+		if all_player[one_player][1] in A_map.entities:
+			death, empty_hand = all_player[one_player][0].check_status()
+			if death:
+				print(all_player[one_player][0], "died!")
+				#remove the player
+				if all_player[one_player][1].position:
+					A_map.remove_entity(all_player[one_player][1])
+					number_of_alive_player -= 1
+				continue
+			choose_your_action = None
+			action = 1
+			#in case a player dies in its own turn
+			if death:
+				action = 3
+			while action != 3:
+				#find the adjecent entities for both npcs and players
+				adjecent_to_entity = []
+				for destination in all_player[one_player][1].position.alailable_destinacions:
+					if destination.entity_ocupation != None:
+						adjecent_to_entity.append(destination.entity_ocupation)
 
 
-			if all_player[one_player][0].computer == True:
-				print(A_map)
-				print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name, action))
-				to_continue(3)
-				if len(adjecent_to_entity) == 0:
-					npc_move(all_player[one_player][1], A_map)
+				if all_player[one_player][0].computer == True:
 					print(A_map)
-					to_continue()
-				elif len(adjecent_to_entity) == 1:
-					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[0].character)][0])
-				else:
-					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[randint(0, len(adjecent_to_entity) - 1)].character)][0])
-			else:
-				print(A_map)
-				available_options = []
-				for i in range(len(all_player[one_player][1].position.alailable_destinacions)):
-					if all_player[one_player][1].position.alailable_destinacions[i].entity_ocupation is not None:
-						continue
-					available_options.append(str(i))
-				
-				#if there are no locations available to move, it also means that you are surronded by entities
-				if len(available_options) > 0:
-					#if there are no enemies to attack means there are only location to go too and freendly entities adjecent to you
+					print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name, action))
+					to_continue(3)
 					if len(adjecent_to_entity) == 0:
-						choose_your_action = '1'
-						print("No enemies around to attack")
+						npc_move(all_player[one_player][1], A_map)
+						print(A_map)
+						to_continue(1)
+					elif len(adjecent_to_entity) == 1:
+						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[0].character)][0])
 					else:
-						choose_your_action = input("{}\nYou are at {} (x={}, y={})\nAction {}. Do you want to move or attack? 1/2: ".format(all_player[one_player][0].player_name, all_player[one_player][1].position, all_player[one_player][1].position.location[0], all_player[one_player][1].position.location[1], action))
-						while choose_your_action not in ['1', '2']:
-							choose_your_action = input("Wrong input trty again: ")
+						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[randint(0, len(adjecent_to_entity) - 1)].character)][0])
 				else:
-					choose_your_action = '2'
-					print("You are surrounded, can't move!")
-				
-				
+					print(A_map)
+					available_options = []
+					for i in range(len(all_player[one_player][1].position.alailable_destinacions)):
+						if all_player[one_player][1].position.alailable_destinacions[i].entity_ocupation is not None:
+							continue
+						available_options.append(str(i))
+					
+					choose_your_action = '0'
+					#if there are no locations available to move, it also means that you are surronded by entities
+					if len(available_options) > 0:
+						#if there are no enemies to attack means there are only location to go too and freendly entities adjecent to you
+						if empty_hand and choose_your_action != '1':
+							choose_your_action = '1'
+							print("Cannot attack with no cards\nAction {}.".format(action))
+						if len(adjecent_to_entity) == 0 and choose_your_action != '1':
+							choose_your_action = '1'
+							print("No enemies around to attack\nAction {}.".format(action))
+						if len(adjecent_to_entity) > 0 and choose_your_action != '1':
+							choose_your_action = input("{}\nYou are at {} (x={}, y={})\nAction {}. Do you want to move or attack? 1/2: ".format(all_player[one_player][0].player_name, all_player[one_player][1].position, all_player[one_player][1].position.location[0], all_player[one_player][1].position.location[1], action))
+							while choose_your_action not in ['1', '2']:
+								choose_your_action = input("Wrong input trty again: ")
+					else:
+						choose_your_action = '2'
+						print("You are surrounded, can't move!\nAction {}.".format(action))
+					
+					
 
-					 
+						 
+					if choose_your_action == '1':
+						lets_move(all_player[one_player][1], A_map)
+					else:
+						for i in range(1, len(adjecent_to_entity) + 1):
+							print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_to_entity[i - 1])][0].player_name, adjecent_to_entity[i - 1].position, adjecent_to_entity[i - 1].position.location)) 
+						choose_your_enemy = input("Who do you want to attack?: ")
+						while choose_your_enemy not in [str(num_of_option) for num_of_option in range(1, len(adjecent_to_entity) + 1)]:
+							 choose_your_enemy = input("Invalid option, try again: ")
+						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[int(choose_your_enemy) - 1].character)][0])
+				action += 1
 				
-				if choose_your_action == '1':
-					lets_move(all_player[one_player][1], A_map)
-				else:
-					for i in range(1, len(adjecent_to_entity) + 1):
-						print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_to_entity[i - 1])][0].player_name, adjecent_to_entity[i - 1].position, adjecent_to_entity[i - 1].position.location)) 
-					choose_your_enemy = input("Who do you want to attack?: ")
-					while choose_your_enemy not in [str(num_of_option) for num_of_option in range(1, len(adjecent_to_entity) + 1)]:
-						 choose_your_enemy = input("Invalid option, try again: ")
-					game_end = start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[int(choose_your_enemy) - 1].character)][0])
-					#if not game_end:
-					#	game_end = start_turn(player_2, all_player[one_player][0])
-			action += 1
+				for every_player in all_player:
+					death_check_2, empty_hand_check_2 = all_player[every_player][0].check_status()
+					if death_check_2:
+						print(all_player[every_player][0], "died!")
+						#remove the player
+						if all_player[every_player][1].position:
+							A_map.remove_entity(all_player[every_player][1])
+							number_of_alive_player -= 1
+				print(number_of_alive_player)
+				if number_of_alive_player == 1:
+					print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player " + str(A_map.entities[0])][0]))
+					return True
+				#in case a player dies in its own turn
+				if death:
+					action = 3
+	return False
 
 
 
 # a helpfull function inbetwin inputs and prints to not output everything all together and creating chaos to the terminal
 ## upgraded to continue automaticaly, less types
 def to_continue(auto_or_manual=0):
+	#finishedreading = input("Type anything to continue: ")
+	#"""
 	if auto_or_manual == 0:
 		finishedreading = input("Type anything to continue: ")
 	else:
@@ -133,7 +173,7 @@ def to_continue(auto_or_manual=0):
 		for i in range(time_to_wait):
 			#waiting_message += "."
 			print(end="\r")
-			time.sleep(1)
+			time.sleep(1)#"""
 
 
 # function that will get repeated for each plater, accepts the number corresponting to the current player and return a completed player object with randomized deck, name, hand and hp
@@ -193,7 +233,7 @@ def start_turn(current_player, enemy_player):
 ===================================================
 !!!!!	------>> {} YOU WIN!
 ===================================================\n""".format(current_player.player_name, enemy_player.player_name))
-		return True				#with this the hole game needs to ends
+		#return True				#with this the hole game needs to ends
 	else:
 		#in case there are no cards left
 		if cards_finished:
@@ -203,17 +243,17 @@ def start_turn(current_player, enemy_player):
 ===================================================
 !!!!!	------>> {} YOU WIN!
 ===================================================\n""".format(current_player.player_name, enemy_player.player_name))
-				return True				#with this the hole game needs to ends
+				#return True				#with this the hole game needs to ends
 			elif current_player.hp > enemy_player.hp:
 				print("""\n\nno cards left and {} has less hp!
 
 ===================================================
 !!!!!	------>> {} YOU WIN!
 ===================================================\n""".format(enemy_player.player_name, current_player.player_name))
-				return True				#with this the hole game needs to ends
+				#return True				#with this the hole game needs to ends
 			else:
 				print("\n\nno cards left and you have the same hp...\n\tIts a fucking draw!\n")
-				return True				#with this the hole game needs to ends
+				#return True				#with this the hole game needs to ends
 
 		#check if the player is the computer
 		if current_player.computer:
@@ -242,7 +282,7 @@ def start_turn(current_player, enemy_player):
 				to_continue(3)
 			else:
 				to_continue(3)
-		return False
+		#return False
 
 #ask each player to pick a card
 def pick_a_card(current_player, enemy_player, initiative):

@@ -93,6 +93,8 @@ players vs computers
 custom teams
 
 
+
+Need for a remove() methode and a checker() if a player or npc has died
 					
 					
 					

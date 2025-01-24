@@ -57,7 +57,7 @@ def find_fastest_path_to_player(given_map, npc, player):
 
 def npc_move(npc_to_move, given_map):
 	reccomended_choice = [inf, None]
-	path_for_every_player = [find_fastest_path_to_player(given_map, npc_to_move, player) for player in given_map.entities if player.npc is False]
+	path_for_every_player = [find_fastest_path_to_player(given_map, npc_to_move, player) for player in given_map.entities if player is not npc_to_move and player.position is not None]
 	print()
 	for path in path_for_every_player:
 		if path[0] < reccomended_choice[0]:
