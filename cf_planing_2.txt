@@ -88,15 +88,47 @@ campain:
 
 game modes:
 
-all vs all
+all vs all     
 players vs computers
 custom teams
 
 
 
-Need for a remove() methode and a checker() if a player or npc has died
+Need for a remove() methode and a checker() if a player or npc has died COMPLETE
+
+Need a fucntion to handle the duplicate death situation in actuall_turn()
 					
-					
+
+For game modes I need a way for entities to be allowed to attack only certain entities.
+
+ 1) There should be a self.team variable inside the entities class that will allow for this functionality
+
+
+ 2) methods and functions that needs alteration to accept this new self.team variable and make each mode work correctly:
+	
+	a) the A*star alforithm propably
+	b) and the function that handles the situation when an entity has another entity for neigbor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 					
 					
 					

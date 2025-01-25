@@ -1,4 +1,4 @@
-from cf_classes_2 import Entity
+#from cf_classes_2 import Entity
 from math import inf
 from heapq import heappop, heappush
 
@@ -57,7 +57,7 @@ def find_fastest_path_to_player(given_map, npc, player):
 
 def npc_move(npc_to_move, given_map):
 	reccomended_choice = [inf, None]
-	path_for_every_player = [find_fastest_path_to_player(given_map, npc_to_move, player) for player in given_map.entities if player is not npc_to_move and player.position is not None]
+	path_for_every_player = [find_fastest_path_to_player(given_map, npc_to_move, player) for player in given_map.entities if player.team != npc_to_move.team and player.position is not None]
 	print()
 	for path in path_for_every_player:
 		if path[0] < reccomended_choice[0]:
@@ -71,7 +71,28 @@ def Fight(attacking_entity, defending_entity):
 	pass
 
 
+def condition_for_endgame(teams_given, game_mode_given, new_death=None):
+	if new_death is not None:
+		for team in teams_given:
+			print(team, teams_given[team])
+		print(new_death)
+		teams_given[new_death[1].team].remove(new_death)
+	alive_teams = []
+	for team in teams_given:
+		for team_player in teams_given[team]:
+			if team_player[1].position is not None:
+				alive_teams.append(team)
+				break
+	return alive_teams
 
+
+def end_game_message(teams_given, game_mode_given):
+	if game_mode_given == "Campaing":
+		for team in teams_given:
+			if team == 1:
+				return "\n{} defeated all oponments and WON THE GAME!!!\nCongratsulations!\n".format(teams_given[team][0][0].player_name)
+			else:
+				return "\nComputers destroyed you\nGAME OVER!!!\n"
 
 
 

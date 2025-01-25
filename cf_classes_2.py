@@ -3,11 +3,12 @@
 
 #entity is a class represends either the player or the computer
 class Entity:
-	def __init__(self, character, starting_position, npc=False):
+	def __init__(self, character, starting_position, team=0, npc=False):
 		self.character = character
 		self.position = starting_position
 		self.position.entity_ocupation = self
 		self.npc = npc
+		self.team = team
 	
 	def __repr__(self):
 		return self.character

@@ -2,7 +2,7 @@ import time
 from cf_list_dicts import decks, attacker_message, ton_of_space
 from cf_classes import Card, Player
 from random import randint
-from cf_functions_2 import lets_move, npc_move
+from cf_functions_2 import lets_move, npc_move, condition_for_endgame, end_game_message
 from cf_classes_2 import Entity
 #from cf_list_dicts import A_map
 
@@ -10,16 +10,21 @@ from cf_classes_2 import Entity
 # here the game starts and ends if any player reaches 0 hp. *The start_turn function returns a bool that changes if the upper condition changes.
 def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None, A_map=None):
 	players = {}
+	teams = {}
 	player_names = []
 	
 
 	#if game mode is campaign
 	if game_mode == 'Campaing':
+		teams[1] = []
+		teams[2] = []
 		for player in players_and_positions:
 			if player == 1:
-				players["Player " + str(player)] = [set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]])]
+				players["Player " + str(player)] = [set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 1)]
+				teams[1].append(players["Player " + str(player)])
 			else:
-				players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]])]
+				players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 2, True)]
+				teams[2].append(players["Player " + str(player)])
 			A_map.add_entity(players["Player " + str(player)][1])
 			player_names.append(players["Player " + str(player)][0].player_name)
 
@@ -46,7 +51,7 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 
 
 	print("")
-	for player in players:
+	for player in players: 
 		print(players[player][0])
 	A_map.create_map()
 	print("")
@@ -54,55 +59,77 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 	#Since I am adding multyple players the condition for this will change
 	game_end = False
 	while game_end == False:
-		game_end = actuall_turn(players, A_map)
+		game_end = actuall_turn(players, teams, A_map, game_mode)
 	to_continue()
 
 
-def actuall_turn(all_player, A_map):
-	number_of_alive_player = len([every_alive_entity for every_alive_entity in A_map.entities if every_alive_entity.position is not None]) 
+def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
+	
+	the_alive_teams = condition_for_endgame(all_teams, the_game_mode)
+	#number_of_alive_player = len([every_alive_entity for every_alive_entity in the_map_given.entities if every_alive_entity.position is not None]) 
 	for one_player in all_player:
 		print(all_player[one_player][1])
 		#if there is only one player alive the game ends
-		print(number_of_alive_player, A_map.entities)
-		if number_of_alive_player == 1:
-			print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player ", str(A_map.entities[0])][0]))
+		#print(number_of_alive_player, the_map_given.entities)
+		#if number_of_alive_player == 1:
+			#print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player ", str(the_map_given.entities[0])][0]))
+			#return True
+		if len(the_alive_teams) == 1:
+			print(end_game_message(the_alive_teams, the_game_mode))
 			return True
-		if all_player[one_player][1] in A_map.entities:
+		if all_player[one_player][1] in the_map_given.entities:
+			
+			#Death check 1
 			death, empty_hand = all_player[one_player][0].check_status()
 			if death:
 				print(all_player[one_player][0], "died!")
 				#remove the player
 				if all_player[one_player][1].position:
-					A_map.remove_entity(all_player[one_player][1])
-					number_of_alive_player -= 1
+					the_map_given.remove_entity(all_player[one_player][1])
+					#number_of_alive_player -= 1
+					the_alive_teams = condition_for_endgame(all_teams, the_game_mode, all_player[one_player])
 				continue
 			choose_your_action = None
 			action = 1
 			#in case a player dies in its own turn
 			if death:
 				action = 3
+				
+			#The two actions of each players turn
 			while action != 3:
 				#find the adjecent entities for both npcs and players
 				adjecent_to_entity = []
+				adjecent_enemies = []
+				adjecent_alies = []
+				adjecent_positions = []
 				for destination in all_player[one_player][1].position.alailable_destinacions:
 					if destination.entity_ocupation != None:
 						adjecent_to_entity.append(destination.entity_ocupation)
+						if destination.entity_ocupation.team != all_player[one_player][1].team:
+							adjecent_enemies.append(destination.entity_ocupation)
+						else:
+							adjecent_alies.append(destination.entity_ocupation)
+					else:
+						adjecent_positions.append(destination)
 
 
 				if all_player[one_player][0].computer == True:
-					print(A_map)
+					print(the_map_given)
 					print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name, action))
 					to_continue(3)
-					if len(adjecent_to_entity) == 0:
-						npc_move(all_player[one_player][1], A_map)
-						print(A_map)
+					if len(adjecent_enemies) == 0:
+						if len(adjecent_positions) > 0:
+							npc_move(all_player[one_player][1], the_map_given)
+							print(the_map_given)
+						else:
+							print("Nowere to move...")
 						to_continue(1)
-					elif len(adjecent_to_entity) == 1:
-						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[0].character)][0])
+					elif len(adjecent_enemies) == 1:
+						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_enemies[0].character)][0])
 					else:
-						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[randint(0, len(adjecent_to_entity) - 1)].character)][0])
+						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_enemies[randint(0, len(adjecent_enemies) - 1)].character)][0])
 				else:
-					print(A_map)
+					print(the_map_given)
 					available_options = []
 					for i in range(len(all_player[one_player][1].position.alailable_destinacions)):
 						if all_player[one_player][1].position.alailable_destinacions[i].entity_ocupation is not None:
@@ -131,7 +158,7 @@ def actuall_turn(all_player, A_map):
 
 						 
 					if choose_your_action == '1':
-						lets_move(all_player[one_player][1], A_map)
+						lets_move(all_player[one_player][1], the_map_given)
 					else:
 						for i in range(1, len(adjecent_to_entity) + 1):
 							print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_to_entity[i - 1])][0].player_name, adjecent_to_entity[i - 1].position, adjecent_to_entity[i - 1].position.location)) 
@@ -141,17 +168,22 @@ def actuall_turn(all_player, A_map):
 						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[int(choose_your_enemy) - 1].character)][0])
 				action += 1
 				
+				#Death check 2
 				for every_player in all_player:
 					death_check_2, empty_hand_check_2 = all_player[every_player][0].check_status()
 					if death_check_2:
 						print(all_player[every_player][0], "died!")
 						#remove the player
 						if all_player[every_player][1].position:
-							A_map.remove_entity(all_player[every_player][1])
-							number_of_alive_player -= 1
-				print(number_of_alive_player)
-				if number_of_alive_player == 1:
-					print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player " + str(A_map.entities[0])][0]))
+							the_map_given.remove_entity(all_player[every_player][1])
+							#number_of_alive_player -= 1
+							the_alive_teams = condition_for_endgame(all_teams, the_game_mode, all_player[every_player])
+				#print(number_of_alive_player)
+				#if number_of_alive_player == 1:
+					#print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player " + str(the_map_given.entities[0])][0]))
+					#return True
+				if len(the_alive_teams) == 1:
+					print(end_game_message(the_alive_teams, the_game_mode))
 					return True
 				#in case a player dies in its own turn
 				if death:
@@ -163,8 +195,8 @@ def actuall_turn(all_player, A_map):
 # a helpfull function inbetwin inputs and prints to not output everything all together and creating chaos to the terminal
 ## upgraded to continue automaticaly, less types
 def to_continue(auto_or_manual=0):
-	#finishedreading = input("Type anything to continue: ")
-	#"""
+	finishedreading = input("Type anything to continue: ")
+	"""
 	if auto_or_manual == 0:
 		finishedreading = input("Type anything to continue: ")
 	else:
