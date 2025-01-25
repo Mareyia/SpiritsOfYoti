@@ -96,7 +96,7 @@ custom teams
 
 Need for a remove() methode and a checker() if a player or npc has died COMPLETE
 
-Need a fucntion to handle the duplicate death situation in actuall_turn()
+*MAYBE NOT*Need a fucntion to handle the duplicate death situation in actuall_turn()
 					
 
 For game modes I need a way for entities to be allowed to attack only certain entities.

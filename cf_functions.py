@@ -1,5 +1,5 @@
 import time
-from cf_list_dicts import decks, attacker_message, ton_of_space
+from cf_list_dicts import decks, attacker_message, ton_of_space, instructions
 from cf_classes import Card, Player
 from random import randint
 from cf_functions_2 import lets_move, npc_move, condition_for_endgame, end_game_message
@@ -15,7 +15,7 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 	
 
 	#if game mode is campaign
-	if game_mode == 'Campaing':
+	if game_mode.previous_menu.menu_sub_title == 'Campaing':
 		teams[1] = []
 		teams[2] = []
 		for player in players_and_positions:
@@ -25,32 +25,44 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 			else:
 				players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 2, True)]
 				teams[2].append(players["Player " + str(player)])
-				players["Player " + str(player)][0].hp = 1
+				#players["Player " + str(player)][0].hp = 1
 			A_map.add_entity(players["Player " + str(player)][1])
 			player_names.append(players["Player " + str(player)][0].player_name)
 
 	#if game mode is costum
+	elif game_mode.previous_menu.menu_sub_title == 'Custom Match':
+		if game_mode.menu_title == 'All vs All':
+			how_many_players = input("How many players are playing?: ")
+			while (int(how_many_players) < 1 and int(how_many_players) > len(A_map.locations)/2) or how_many_players.isdigit() is False:
+				how_many_players = input("Incorrect input, try again. How many players are playing? (type from 1 to {}): ".format(len(A_map.locations)/2))
+			#players is an array of every player, every player has a list of two classes, 0 for the card fight and 1 for the map movement 
+
+			for i in range(1, int(how_many_players) + 1):
+				is_computer = input("Player {} is a computer? (y/n): ".format(i))
+				# list_of_available_locations lists the locations that are not selected by other entities
+				list_of_available_locations = [location for location in A_map.locations if location.entity_ocupation == None]
+				while is_computer.lower() not in ['y', 'n']:
+					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(i))
+				if is_computer == 'y':
+					players["Player " + str(i)] = [computer_set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)], True)]
+				else:
+					players["Player " + str(i)] = [set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)])]
+				A_map.add_entity(players["Player " + str(i)][1])
+				player_names.append(players["Player " + str(i)][0].player_name)
+		
+		elif game_mode.menu_title == 'Players vs Computers':
+			return
+		
+		else:
+			return
+
+	#if instructions were selected
 	else:
-		how_many_players = input("How many players are playing?: ")
-		while (int(how_many_players) < 1 and int(how_many_players) > len(A_map.locations)/2) or how_many_players.isdigit() is False:
-			how_many_players = input("Incorrect input, try again. How many players are playing? (type from 1 to {}): ".format(len(A_map.locations)/2))
-		#players is an array of every player, every player has a list of two classes, 0 for the card fight and 1 for the map movement 
-
-		for i in range(1, int(how_many_players) + 1):
-			is_computer = input("Player {} is a computer? (y/n): ".format(i))
-			# list_of_available_locations lists the locations that are not selected by other entities
-			list_of_available_locations = [location for location in A_map.locations if location.entity_ocupation == None]
-			while is_computer.lower() not in ['y', 'n']:
-				is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(i))
-			if is_computer == 'y':
-				players["Player " + str(i)] = [computer_set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)], True)]
-			else:
-				players["Player " + str(i)] = [set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)])]
-			A_map.add_entity(players["Player " + str(i)][1])
-			player_names.append(players["Player " + str(i)][0].player_name)
-
-
-
+		print(instructions)
+		return
+	
+	
+	
 	print("")
 	for player in players: 
 		print(players[player][0])
@@ -67,14 +79,8 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 	
 	the_alive_teams = condition_for_endgame(all_teams, the_game_mode)
-	#number_of_alive_player = len([every_alive_entity for every_alive_entity in the_map_given.entities if every_alive_entity.position is not None]) 
 	for one_player in all_player:
 		print(all_player[one_player][1])
-		#if there is only one player alive the game ends
-		#print(number_of_alive_player, the_map_given.entities)
-		#if number_of_alive_player == 1:
-			#print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player ", str(the_map_given.entities[0])][0]))
-			#return True
 		if len(the_alive_teams.keys()) == 1:
 			print(end_game_message(the_alive_teams, the_game_mode))
 			return True
@@ -179,10 +185,6 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 							the_map_given.remove_entity(all_player[every_player][1])
 							#number_of_alive_player -= 1
 							the_alive_teams = condition_for_endgame(all_teams, the_game_mode, all_player[every_player])
-				#print(number_of_alive_player)
-				#if number_of_alive_player == 1:
-					#print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player " + str(the_map_given.entities[0])][0]))
-					#return True
 				if len(the_alive_teams.keys()) == 1:
 					print(end_game_message(the_alive_teams, the_game_mode))
 					return True

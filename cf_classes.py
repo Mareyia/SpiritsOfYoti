@@ -228,7 +228,7 @@ class All_Menu:
 					self.current_menu = player_selection
 			else:
 				dificulty_mode, players_and_positions, apropriet_map = self.current_menu.difficulty_genaretion(player_selection_number, all_maps)
-				game_function(self.current_menu.previous_menu.menu_sub_title, dificulty_mode, players_and_positions, apropriet_map)
+				game_function(self.current_menu, dificulty_mode, players_and_positions, apropriet_map)
 				self.current_menu = self.starting_menu
 			self.using_menu(game_function, all_maps, player_selection, player_selection_number)
 	
