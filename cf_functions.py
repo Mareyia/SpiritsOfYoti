@@ -25,6 +25,7 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 			else:
 				players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 2, True)]
 				teams[2].append(players["Player " + str(player)])
+				players["Player " + str(player)][0].hp = 1
 			A_map.add_entity(players["Player " + str(player)][1])
 			player_names.append(players["Player " + str(player)][0].player_name)
 
@@ -74,7 +75,7 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 		#if number_of_alive_player == 1:
 			#print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player ", str(the_map_given.entities[0])][0]))
 			#return True
-		if len(the_alive_teams) == 1:
+		if len(the_alive_teams.keys()) == 1:
 			print(end_game_message(the_alive_teams, the_game_mode))
 			return True
 		if all_player[one_player][1] in the_map_given.entities:
@@ -182,7 +183,7 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 				#if number_of_alive_player == 1:
 					#print("{} defeated all oponments and WON THE GAME!!! Congratsulations!".format(all_player["Player " + str(the_map_given.entities[0])][0]))
 					#return True
-				if len(the_alive_teams) == 1:
+				if len(the_alive_teams.keys()) == 1:
 					print(end_game_message(the_alive_teams, the_game_mode))
 					return True
 				#in case a player dies in its own turn

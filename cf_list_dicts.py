@@ -1,6 +1,7 @@
 from cf_classes import Card, Menu_options, All_Menu
 from cf_classes_2 import Possition, Playing_grid, The_map
 
+#menu stracture
 main_menu = Menu_options("Main menu")
 main_menu.add_option("1", Menu_options("New Game", "1", main_menu, "Campaing"))
 main_menu.add_option("2", Menu_options("Custom Match", "2", main_menu, "Custom Match"))
@@ -20,6 +21,7 @@ menuuuu = All_Menu(main_menu)
 
 A_map = The_map(Playing_grid(17, 18))
 
+#Maps available locations
 A_map.add_location(Possition("A", "location", [11, 6]))
 A_map.add_location(Possition("B", "location", [8, 12]))
 A_map.add_location(Possition("C", "location", [17, 18]))
@@ -29,6 +31,7 @@ A_map.add_location(Possition("F", "location", [14, 10]))
 A_map.add_location(Possition("G", "location", [2, 17]))
 A_map.add_location(Possition("H", "location", [16, 2]))
 
+#Maps roads that conncets the map locations
 A_map.add_road(Possition("A", "road", [A_map.locations[0], A_map.locations[1]]))
 A_map.add_road(Possition("B", "road", [A_map.locations[2], A_map.locations[3]]))
 A_map.add_road(Possition("C", "road", [A_map.locations[0], A_map.locations[5]]))
@@ -47,11 +50,13 @@ A_map.add_road(Possition("N", "road", [A_map.locations[7], A_map.locations[0]]))
 #position 0, 1 and 2 should be the easy, normal and hard map
 maps = [A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map]
 
+#Cards
 punch_of_focus = Card("Punch of focus", "attack", 2)
 kick_of_fury = Card("Kick of fury", "attack", 3)
 flame_spit = Card("Flame spit", "attack", 5)
 xisia = Card("Xisia", "attack", 8)
 headbut = Card("Headbut", "attack", 5)
+heavy_attack = Card("Toes on your mouth", "attack", 7)
 
 
 power_stance = Card("Power stance", "block", 1)
@@ -69,9 +74,8 @@ magical_web = Card("Magical web", "special")
 decks = {
 "Firefly":[punch_of_focus, kick_of_fury, flame_spit, flame_spit, power_stance, power_stance, throwing_rocks, throwing_rocks, throwing_rocks, shooting_hertfull_words, shooting_hertfull_words, drinking_ouiski],
 "Antblue": [punch_of_focus, kick_of_fury, power_stance, dodje, dodje, throwing_rocks, throwing_rocks, shooting_hertfull_words, shooting_hertfull_words, drinking_ouiski, magical_web, magical_web], 
-"Shit": [punch_of_focus, kick_of_fury, power_stance, dodje, dodje, throwing_rocks, throwing_rocks, shooting_hertfull_words, shooting_hertfull_words, drinking_ouiski, magical_web]
-}
-#"Poutsa": [heavy_attack, headbut, headbut, xisia, xisia, feet_distraction, smelly_diaria, smelly_diaria, aima_Periodou, aima_Periodou, aima_Periodou, aima_Periodou]
+"Shit": [punch_of_focus, kick_of_fury, power_stance, xisia, dodje, throwing_rocks, aima_Periodou, shooting_hertfull_words, shooting_hertfull_words, drinking_ouiski, feet_distraction, feet_distraction],
+"Poutsa": [heavy_attack, headbut, headbut, xisia, xisia, feet_distraction, smelly_diaria, smelly_diaria, aima_Periodou, aima_Periodou, aima_Periodou, aima_Periodou]}
 
 
 instructions = """

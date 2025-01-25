@@ -77,11 +77,11 @@ def condition_for_endgame(teams_given, game_mode_given, new_death=None):
 			print(team, teams_given[team])
 		print(new_death)
 		teams_given[new_death[1].team].remove(new_death)
-	alive_teams = []
+	alive_teams = {}
 	for team in teams_given:
 		for team_player in teams_given[team]:
 			if team_player[1].position is not None:
-				alive_teams.append(team)
+				alive_teams[team] = teams_given[team]
 				break
 	return alive_teams
 
