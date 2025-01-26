@@ -2,7 +2,7 @@ import time
 from cf_list_dicts import decks, attacker_message, ton_of_space, instructions
 from cf_classes import Card, Player
 from random import randint
-from cf_functions_2 import lets_move, npc_move, condition_for_endgame, end_game_message
+from cf_functions_2 import lets_move, npc_move, condition_for_endgame, end_game_message, team_balance_check
 from cf_classes_2 import Entity
 #from cf_list_dicts import A_map
 
@@ -58,10 +58,7 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(player))
 				
 				#safe measure in case a player puts all players in one team
-				"""if how_many_teams == 2:
-					if i == how_many_players:
-						if len(teams[1]) == 0:
-							print("No players")"""
+				is_computer = team_balance_check(is_computer, teams, player, players_and_positions, to_continue, 'Players vs Computers')
 				
 				if is_computer == 'y':
 					players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 2, True)]
@@ -83,18 +80,15 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 				is_computer = input("Player {} is a computer? (y/n): ".format(player))
 				while is_computer.lower() not in ['y', 'n']:
 					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(player))
-				
-				#safe measure in case a player puts all players in one team
-				"""if how_many_teams == 2:
-					if i == how_many_players:
-						if len(teams[1]) == 0:
-							print("No players")"""
 							
 				for team in teams:
-					print("Team number {} with players: {}".format(team, teams[team]))
-				which_team = input("Select a team for Player {} (select a team from 1 to {}): ".format(i, how_many_teams))
-				while which_team not in range(1, int(how_many_teams) + 1):
+					print("Team number {} with players: {}".format(team, [p[0].player_name for p in teams[team]]))
+				which_team = input("Select a team for Player {} (select a team from 1 to {}): ".format(player, how_many_teams))
+				while which_team not in [str(n) for n in range(1, int(how_many_teams) + 1)]:
 					which_team = input("Wrong input, try again. Player {} will be in team: (select a team from 1 to {}): ".format(i, how_many_teams))
+				
+				#safe measure in case a player puts all players in one team
+				which_team = team_balance_check(int(which_team), teams, player, players_and_positions, to_continue)
 					
 				if is_computer == 'y':
 					players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], which_team, True)]

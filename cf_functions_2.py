@@ -1,6 +1,7 @@
 #from cf_classes_2 import Entity
 from math import inf
 from heapq import heappop, heappush
+from random import randint
 
 def lets_move(character, given_map):
 	where = None
@@ -107,8 +108,29 @@ def end_game_message(teams_given, game_mode_given):
 			return "\nTeam {} defeated all enemy teams and WON THE GAME!!!\nCongratsulations!\n".format(team)
 
 
-
-
+def team_balance_check(given_answer, all_the_teams, number_of_player, all_the_players, the_continue_function, mode_of_the_custom_game="Something else"):
+	players_left = len(all_the_players.keys()) - number_of_player + 1
+	empty_teams = {}
+	#print("Hello!")
+	for team in all_the_teams:
+		if len(all_the_teams[team]) == 0:
+			empty_teams[team] = all_the_teams[team]
+			#print(empty_teams[team])
+			#print(all_the_teams[team])
+	if len(empty_teams.keys()) == players_left:
+		print("Can't do, some teams will be left empty")
+		the_continue_function(1)
+		print("Autofilling")
+		the_continue_function(1)
+		if mode_of_the_custom_game == "Players vs Computers":
+			if all_the_teams[1] == empty_teams[1]:
+				return "n"
+			else:
+				return "y"
+		else:
+			print(empty_teams.keys())
+			return list(empty_teams.keys())[randint(0, len(empty_teams.keys())- 1)]
+	return given_answer
 
 
 
