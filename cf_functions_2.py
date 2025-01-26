@@ -71,7 +71,7 @@ def Fight(attacking_entity, defending_entity):
 	pass
 
 
-def condition_for_endgame(teams_given, game_mode_given, new_death=None):
+def condition_for_endgame(teams_given, new_death=None):
 	if new_death is not None:
 		for team in teams_given:
 			print(team, teams_given[team])
@@ -87,12 +87,24 @@ def condition_for_endgame(teams_given, game_mode_given, new_death=None):
 
 
 def end_game_message(teams_given, game_mode_given):
-	if game_mode_given == "Campaing":
+	if game_mode_given.menu_sub_title == "Campaing":
 		for team in teams_given:
 			if team == 1:
 				return "\n{} defeated all oponments and WON THE GAME!!!\nCongratsulations!\n".format(teams_given[team][0][0].player_name)
 			else:
 				return "\nComputers destroyed you\nGAME OVER!!!\n"
+	elif game_mode_given.menu_title == "All vs All":
+		for team in teams_given:
+			return "\n{} defeated all enemies and WON THE GAME!!!\nCongratsulations!\n".format(teams_given[team][0][0].player_name)
+	elif game_mode_given.menu_title == "Players vs Computers":
+		for team in teams_given:
+			if team == 1:
+				return "\nTeam {} humans you defeated the computers and WON THE GAME!!!\nCongratsulations!\n".format(team)
+			else:
+				return "\nComputers destroyed you\nGAME OVER!!!\n"
+	else:
+		for team in teams_given:
+			return "\nTeam {} defeated all enemy teams and WON THE GAME!!!\nCongratsulations!\n".format(team)
 
 
 

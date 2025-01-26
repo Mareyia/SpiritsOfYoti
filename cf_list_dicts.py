@@ -1,25 +1,8 @@
 from cf_classes import Card, Menu_options, All_Menu
 from cf_classes_2 import Possition, Playing_grid, The_map
 
-#menu stracture
-main_menu = Menu_options("Main menu")
-main_menu.add_option("1", Menu_options("New Game", "1", main_menu, "Campaing"))
-main_menu.add_option("2", Menu_options("Custom Match", "2", main_menu, "Custom Match"))
-main_menu.add_option("3", Menu_options("Instructions", "3", main_menu, "Instructions",  "", "", True))
-main_menu.add_option("0", Menu_options("Exit", "0"))
-main_menu.options["1"].add_option("1", Menu_options("Easy", "1", main_menu.options["1"], "", "", "", True))
-main_menu.options["1"].add_option("2", Menu_options("Normal", "2", main_menu.options["1"],  "", "", "", True))
-main_menu.options["1"].add_option("3", Menu_options("Hard", "3", main_menu.options["1"],  "", "", "", True))
-main_menu.options["1"].add_option("0", Menu_options("Back", "0"))
-main_menu.options["2"].add_option("1", Menu_options("All vs All", "1", main_menu.options["2"], "", "", "", True))
-main_menu.options["2"].add_option("2", Menu_options("Players vs Computers", "2", main_menu.options["2"], "", "", "", True))
-main_menu.options["2"].add_option("3", Menu_options("Teams", "3", main_menu.options["2"], "", "", "", True))
-main_menu.options["2"].add_option("0", Menu_options("Back", "0"))
-main_menu.options["3"].add_option("0", Menu_options("Back", "0"))
-menuuuu = All_Menu(main_menu)
 
-
-A_map = The_map(Playing_grid(17, 18))
+A_map = The_map(Playing_grid(17, 18), "Test Map")
 
 #Maps available locations
 A_map.add_location(Possition("A", "location", [11, 6]))
@@ -47,8 +30,41 @@ A_map.add_road(Possition("L", "road", [A_map.locations[7], A_map.locations[1]]))
 A_map.add_road(Possition("M", "road", [A_map.locations[7], A_map.locations[2]]))
 A_map.add_road(Possition("N", "road", [A_map.locations[7], A_map.locations[0]]))
 
+#Here I can edit where each player will begin inside the map using either random_starting_positions() for random position or manually using .starting_positions to pust specific positions for each players. example A_map.starting_positions[player_number] = location_position_in_list
+print("\nBefore randomizer\n")
+for starting_position in A_map.starting_positions:
+	print(starting_position, A_map.starting_positions[starting_position])
+A_map.random_starting_positions()
+print("\nAfter randomizer\n")
+for starting_position in A_map.starting_positions:
+	print(starting_position, A_map.starting_positions[starting_position])
+
 #position 0, 1 and 2 should be the easy, normal and hard map
 maps = [A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map]
+
+
+#menu stracture
+main_menu = Menu_options("Main menu")
+main_menu.add_option("1", Menu_options("New Game", "1", main_menu, "Campaing"))
+main_menu.add_option("2", Menu_options("Custom Match", "2", main_menu, "Custom Match"))
+main_menu.add_option("3", Menu_options("Instructions", "3", main_menu, "Instructions",  "", "", True))
+main_menu.add_option("0", Menu_options("Exit", "0"))
+main_menu.options["1"].add_option("1", Menu_options("Easy", "1", main_menu.options["1"], "", "", "", True))
+main_menu.options["1"].add_option("2", Menu_options("Normal", "2", main_menu.options["1"],  "", "", "", True))
+main_menu.options["1"].add_option("3", Menu_options("Hard", "3", main_menu.options["1"],  "", "", "", True))
+main_menu.options["1"].add_option("0", Menu_options("Back", "0"))
+main_menu.options["2"].add_option("1", Menu_options("All vs All", "1", main_menu.options["2"], "Select a map"))
+main_menu.options["2"].add_option("2", Menu_options("Players vs Computers", "2", main_menu.options["2"], "Select a map"))
+main_menu.options["2"].add_option("3", Menu_options("Teams", "3", main_menu.options["2"], "Select a map"))
+main_menu.options["2"].add_option("0", Menu_options("Back", "0"))
+main_menu.options["3"].add_option("0", Menu_options("Back", "0"))
+for i in range(1, len(main_menu.options["2"].options.keys())):	
+	for j in range(1, len(maps) + 1):
+		main_menu.options["2"].options[str(i)].add_option(str(j), Menu_options(maps[j - 1].name_of_map, str(j), main_menu.options["2"].options[str(i)], "", "", "", True))
+	main_menu.options["2"].options[str(i)].add_option("0", Menu_options("Back", "0"))
+menuuuu = All_Menu(main_menu)
+
+
 
 #Cards
 punch_of_focus = Card("Punch of focus", "attack", 2)

@@ -1,5 +1,5 @@
 #from cf_list_dicts import decks
-
+from random import randint
 
 #entity is a class represends either the player or the computer
 class Entity:
@@ -196,11 +196,13 @@ class Playing_grid:
 
 #the map of the game together with the functionality to interact with it
 class The_map:
-	def __init__(self, playing_area):
+	def __init__(self, playing_area, name_of_map):
 		self.playing_area = playing_area
 		self.locations = []
 		self.roads = []
 		self.entities = []
+		self.name_of_map = name_of_map
+		self.starting_positions = {}
 	
 	def __repr__(self):
 		return self.playing_area.__repr__()
@@ -219,6 +221,19 @@ class The_map:
 			self.playing_area.fill_the_road(road)
 		for location in self.locations:
 			self.playing_area.add_position(location)
+	
+	def random_starting_positions(self):
+		used_locations = []
+		for i in range(1, (len(self.locations)//2) + 1):
+			# list_of_available_locations lists the locations that are not selected by other entities
+			available_lovations = [location for location in self.locations if location not in used_locations]
+			random_location = available_lovations[randint(i, len(available_lovations) - 1)]
+			used_locations.append(random_location)
+			for j in range(0, len(self.locations)):
+				if self.locations[j] == random_location:
+					self.starting_positions[i] = j
+					break
+			
 	
 	def update_map(self, position=None):
 		if position is not None:

@@ -8,7 +8,9 @@ from cf_classes_2 import Entity
 
 
 # here the game starts and ends if any player reaches 0 hp. *The start_turn function returns a bool that changes if the upper condition changes.
-def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None, A_map=None):
+def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None, map_inputed=None):
+	#players is an array of every player, every player has a list of two classes, 0 for the card fight and 1 for the map movement
+	A_map = map_inputed
 	players = {}
 	teams = {}
 	player_names = []
@@ -30,31 +32,78 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 			player_names.append(players["Player " + str(player)][0].player_name)
 
 	#if game mode is costum
-	elif game_mode.previous_menu.menu_sub_title == 'Custom Match':
-		if game_mode.menu_title == 'All vs All':
-			how_many_players = input("How many players are playing?: ")
-			while (int(how_many_players) < 1 and int(how_many_players) > len(A_map.locations)/2) or how_many_players.isdigit() is False:
-				how_many_players = input("Incorrect input, try again. How many players are playing? (type from 1 to {}): ".format(len(A_map.locations)/2))
-			#players is an array of every player, every player has a list of two classes, 0 for the card fight and 1 for the map movement 
-
-			for i in range(1, int(how_many_players) + 1):
-				is_computer = input("Player {} is a computer? (y/n): ".format(i))
-				# list_of_available_locations lists the locations that are not selected by other entities
-				list_of_available_locations = [location for location in A_map.locations if location.entity_ocupation == None]
+	elif game_mode.previous_menu.previous_menu.menu_sub_title == 'Custom Match':
+		if game_mode.previous_menu.menu_title == 'All vs All':
+			 
+			for player in players_and_positions:
+				teams[player] = []
+				is_computer = input("Player {} is a computer? (y/n): ".format(player))
 				while is_computer.lower() not in ['y', 'n']:
-					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(i))
+					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(player))
 				if is_computer == 'y':
-					players["Player " + str(i)] = [computer_set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)], True)]
+					players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], player, True)]
+					teams[player].append(players["Player " + str(player)])
 				else:
-					players["Player " + str(i)] = [set_up(i, player_names), Entity(str(i), list_of_available_locations[randint(0, len(list_of_available_locations) - 1)])]
-				A_map.add_entity(players["Player " + str(i)][1])
-				player_names.append(players["Player " + str(i)][0].player_name)
+					players["Player " + str(player)] = [set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], player)]
+					teams[player].append(players["Player " + str(player)])
+				A_map.add_entity(players["Player " + str(player)][1])
+				player_names.append(players["Player " + str(player)][0].player_name)
 		
-		elif game_mode.menu_title == 'Players vs Computers':
-			return
+		elif game_mode.previous_menu.menu_title == 'Players vs Computers':
+			teams[1] = []
+			teams[2] = []
+			for player in players_and_positions:
+				is_computer = input("Player {} is a computer? (y/n): ".format(player))
+				while is_computer.lower() not in ['y', 'n']:
+					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(player))
+				
+				#safe measure in case a player puts all players in one team
+				"""if how_many_teams == 2:
+					if i == how_many_players:
+						if len(teams[1]) == 0:
+							print("No players")"""
+				
+				if is_computer == 'y':
+					players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 2, True)]
+					teams[2].append(players["Player " + str(player)])
+				else:
+					players["Player " + str(player)] = [set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], 1)]
+					teams[1].append(players["Player " + str(player)])
+				A_map.add_entity(players["Player " + str(player)][1])
+				player_names.append(players["Player " + str(player)][0].player_name)
 		
 		else:
-			return
+			how_many_teams = input("In how many teams the players are devided?: ")
+			while int(how_many_teams) < 2 or int(how_many_teams) > len(players_and_positions.keys()) or how_many_teams.isdigit() is False:
+				how_many_teams = input("Incorrect input, try again. In how many teams the players are devided? (type from 2 to {}): ".format(how_many_players))
+
+			for i in range(1, int(how_many_teams) + 1):
+				teams[i] = []
+			for player in players_and_positions:
+				is_computer = input("Player {} is a computer? (y/n): ".format(player))
+				while is_computer.lower() not in ['y', 'n']:
+					is_computer = input("Wrong input, try again. Player {} is a computer? (y/n): ".format(player))
+				
+				#safe measure in case a player puts all players in one team
+				"""if how_many_teams == 2:
+					if i == how_many_players:
+						if len(teams[1]) == 0:
+							print("No players")"""
+							
+				for team in teams:
+					print("Team number {} with players: {}".format(team, teams[team]))
+				which_team = input("Select a team for Player {} (select a team from 1 to {}): ".format(i, how_many_teams))
+				while which_team not in range(1, int(how_many_teams) + 1):
+					which_team = input("Wrong input, try again. Player {} will be in team: (select a team from 1 to {}): ".format(i, how_many_teams))
+					
+				if is_computer == 'y':
+					players["Player " + str(player)] = [computer_set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], which_team, True)]
+					teams[which_team].append(players["Player " + str(player)])
+				else:
+					players["Player " + str(player)] = [set_up(player, player_names), Entity(str(player), A_map.locations[players_and_positions[player]], which_team)]
+					teams[which_team].append(players["Player " + str(player)])
+				A_map.add_entity(players["Player " + str(player)][1])
+				player_names.append(players["Player " + str(player)][0].player_name)
 
 	#if instructions were selected
 	else:
@@ -72,13 +121,13 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 	#Since I am adding multyple players the condition for this will change
 	game_end = False
 	while game_end == False:
-		game_end = actuall_turn(players, teams, A_map, game_mode)
+		game_end = actuall_turn(players, teams, A_map, game_mode.previous_menu)
 	to_continue()
 
 
 def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 	
-	the_alive_teams = condition_for_endgame(all_teams, the_game_mode)
+	the_alive_teams = condition_for_endgame(all_teams)
 	for one_player in all_player:
 		print(all_player[one_player][1])
 		if len(the_alive_teams.keys()) == 1:
@@ -94,7 +143,7 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 				if all_player[one_player][1].position:
 					the_map_given.remove_entity(all_player[one_player][1])
 					#number_of_alive_player -= 1
-					the_alive_teams = condition_for_endgame(all_teams, the_game_mode, all_player[one_player])
+					the_alive_teams = condition_for_endgame(all_teams, all_player[one_player])
 				continue
 			choose_your_action = None
 			action = 1
@@ -180,11 +229,13 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 					death_check_2, empty_hand_check_2 = all_player[every_player][0].check_status()
 					if death_check_2:
 						print(all_player[every_player][0], "died!")
+						if every_player == one_player:
+							death = death_check_2
 						#remove the player
 						if all_player[every_player][1].position:
 							the_map_given.remove_entity(all_player[every_player][1])
 							#number_of_alive_player -= 1
-							the_alive_teams = condition_for_endgame(all_teams, the_game_mode, all_player[every_player])
+							the_alive_teams = condition_for_endgame(all_teams, all_player[every_player])
 				if len(the_alive_teams.keys()) == 1:
 					print(end_game_message(the_alive_teams, the_game_mode))
 					return True

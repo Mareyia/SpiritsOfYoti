@@ -204,12 +204,28 @@ class Menu_options:
 		
 		return dificulty, number_of_players_and_positions, the_chosen_map
 	
-	def map_selection(self):
-		pass
+	def custom_genaretion(self, user_input, all_maps):
+		number_of_players_and_positions = {}
+		the_chosen_map = all_maps[user_input]
+		print(len(the_chosen_map.locations)//2)
+		incorrect_input = True
+		how_many_players = input("How many players are playing?: ")
+		while incorrect_input:
+			if how_many_players.isdigit():
+				if int(how_many_players) < 2 or int(how_many_players) > len(the_chosen_map.locations)//2:
+					how_many_players = input("Incorrect input, try again. How many players are playing? (type from 2 to {}): ".format(len(the_chosen_map.locations)//2))
+				else:
+					incorrect_input = False
+			else:
+				how_many_players = input("Incorrect input, try again. How many players are playing? (type from 2 to {}): ".format(len(the_chosen_map.locations)//2))
+
+		
+		#if the_chosen_map == 1:
+		for i in range(1, int(how_many_players) + 1):
+			number_of_players_and_positions[i] = the_chosen_map.starting_positions[i]
+		return number_of_players_and_positions, the_chosen_map
 	
-	#def activating_option(self):
-	#	player_selection = self.selecting_option()
-	#	if self.options[0].menu_title == Ex
+
 
 class All_Menu:
 	def __init__(self, starting_menu):
@@ -227,8 +243,12 @@ class All_Menu:
 				else:
 					self.current_menu = player_selection
 			else:
-				dificulty_mode, players_and_positions, apropriet_map = self.current_menu.difficulty_genaretion(player_selection_number, all_maps)
-				game_function(self.current_menu, dificulty_mode, players_and_positions, apropriet_map)
+				if self.current_menu.previous_menu.menu_sub_title == "Campaing":
+					dificulty_mode, players_and_positions, apropriet_map = self.current_menu.difficulty_genaretion(player_selection_number, all_maps)
+					game_function(self.current_menu, dificulty_mode, players_and_positions, apropriet_map)
+				elif self.current_menu.previous_menu.menu_sub_title == "Select a map":
+					players_and_positions, apropriet_map = self.current_menu.custom_genaretion(player_selection_number, all_maps)
+					game_function(self.current_menu, None, players_and_positions, apropriet_map)
 				self.current_menu = self.starting_menu
 			self.using_menu(game_function, all_maps, player_selection, player_selection_number)
 	

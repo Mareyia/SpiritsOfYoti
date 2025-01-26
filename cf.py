@@ -1,6 +1,5 @@
 from cf_list_dicts import instructions, menuuuu, maps
-from cf_functions import playGame
-from cf_functions import to_continue
+from cf_functions import playGame, to_continue
 
 print("\n=========================================\n========= Welcome to Card fight =========\n=========================================")
 menuuuu.using_menu(playGame, maps)
