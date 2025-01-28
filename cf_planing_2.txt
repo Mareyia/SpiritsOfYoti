@@ -99,19 +99,47 @@ Need for a remove() methode and a checker() if a player or npc has died COMPLETE
 *MAYBE NOT*Need a fucntion to handle the duplicate death situation in actuall_turn()
 					
 
-For game modes I need a way for entities to be allowed to attack only certain entities.
+For game modes I need a way for entities to be allowed to attack only certain entities. COMPLETED
 
- 1) There should be a self.team variable inside the entities class that will allow for this functionality
+ 1) There should be a self.team variable inside the entities class that will allow for this functionality COMPLETED
 
 
- 2) methods and functions that needs alteration to accept this new self.team variable and make each mode work correctly:
+ 2) methods and functions that needs alteration to accept this new self.team variable and make each mode work correctly: COMPLETED
 	
-	a) the A*star alforithm propably
-	b) and the function that handles the situation when an entity has another entity for neigbor
+	a) the A*star alforithm propably COMPLETED
+	b) and the function that handles the situation when an entity has another entity for neigbor COMPLETED
 
 
 
-choosee a map function that sets limit for player count
+choosee a map function that sets limit for player count  COMPLETED
+
+
+
+1) Need to upgrade maps and use the distance ideas
+	upgrade the roads to be able to go diagonal COMPLETED
+		all moving cases:
+			1 x > and y > diagonal right-down
+			2 x > and y == down
+			3 x > and y < diagonal left-down
+			4 x == and y > right
+			5 x == and y == no need to move
+			6 x == and y < left
+			7 x < and y > diagonal right-up
+			8 x < and y == up
+			9 x < and y < diagonal left-up
+	now they can but not that efficient
+		example to go from x1 y1 to x2 y2 instead of going instantly in one move first it will move to x2 y1 then will take one more move
+	I want give functionality to the distance parameterm
+	distinquise in the map the only available roads
+2) Need to add more maps
+3) Need to upgrade campaign, each difficulty should have multiple levels that each will:
+	increase enemy count
+	have more complete decks
+
+
+!After all that I will get back to the animations and ACSI art
+
+
 
 
 

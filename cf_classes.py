@@ -206,7 +206,7 @@ class Menu_options:
 	
 	def custom_genaretion(self, user_input, all_maps):
 		number_of_players_and_positions = {}
-		the_chosen_map = all_maps[user_input]
+		the_chosen_map = all_maps[user_input - 1]
 		print(len(the_chosen_map.locations)//2)
 		incorrect_input = True
 		how_many_players = input("How many players are playing?: ")

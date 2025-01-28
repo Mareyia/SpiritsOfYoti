@@ -1,4 +1,3 @@
-#from cf_list_dicts import decks
 from random import randint
 
 #entity is a class represends either the player or the computer
@@ -46,56 +45,42 @@ class Possition:
 					if loc_1 != loc_2:
 						loc_1.alailable_destinacions.append(loc_2)
 			if autofill_roads == True:
-				location_A_postion_x = self.location[0].location[0]
-				location_A_postion_y = self.location[0].location[1]
-				location_B_postion_x = self.location[1].location[0]
-				location_B_postion_y = self.location[1].location[1]
-				x_distance = location_A_postion_x - location_B_postion_x
-				y_distance = location_A_postion_y - location_B_postion_y
-				self.distance = abs(x_distance) + abs(y_distance)
-				copy_of_distance = self.distance
+				location_A_postion_x = self.location[0].location[0]   # x = 4
+				location_A_postion_y = self.location[0].location[1]   # y = 4
+				location_B_postion_x = self.location[1].location[0]   # x = 2
+				location_B_postion_y = self.location[1].location[1]   # y = 2
+				x_distance = location_A_postion_x - location_B_postion_x  # x_distance = 2
+				y_distance = location_A_postion_y - location_B_postion_y  # y_distance = 2
+				copy_of_distance = abs(x_distance) + abs(y_distance)  #total_distance = 4 (actual_diagonal_distance = 2)
+				#print("\nOutside while loop\n")
+				#print("x at", location_A_postion_x, "to x at", location_B_postion_x)
+				#print("y at", location_A_postion_y, "to y at", location_B_postion_y)
 				while copy_of_distance > 0:
-					if x_distance > 0:
-						location_A_postion_x -= 1
-						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
-						copy_of_distance -= 1
-						x_distance -= 1
-						if x_distance > 0:
-							location_B_postion_x += 1
-							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
-							copy_of_distance -= 1
-							x_distance -= 1
-					if y_distance > 0:
-						location_A_postion_y -= 1
-						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
-						copy_of_distance -= 1
-						y_distance -= 1
-						if y_distance > 0:
-							location_B_postion_y += 1
-							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
-							copy_of_distance -= 1
-							y_distance -= 1
-
+					#print("Inside while loo")
+					#print("x at", location_A_postion_x, "to x at", location_B_postion_x)
+					#print("y at", location_A_postion_y, "to y at", location_B_postion_y)
+					#print("If this reached zero the loop eends:", copy_of_distance, "x dist:", x_distance, "y dist", y_distance)
 					if x_distance < 0:
-						location_A_postion_x += 1
-						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
-						copy_of_distance -= 1
-						x_distance += 1
-						if x_distance < 0:
-							location_B_postion_x -= 1
-							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
-							copy_of_distance -= 1
-							x_distance += 1
-					if y_distance < 0:
-						location_A_postion_y += 1
-						self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_A_postion_x, location_A_postion_y])
-						copy_of_distance -= 1
-						y_distance += 1
 						if y_distance < 0:
-							location_B_postion_y -= 1
-							self.destinacions[copy_of_distance] = Possition("RP_"+str(copy_of_distance), "road_part", [location_B_postion_x, location_B_postion_y])
-							copy_of_distance -= 1
-							y_distance += 1
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, +1, location_A_postion_y, +1, copy_of_distance, x_distance, y_distance)
+						elif y_distance == 0:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, +1, location_A_postion_y, 0, copy_of_distance, x_distance, y_distance)
+						else:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, +1, location_A_postion_y, -1, copy_of_distance, x_distance, y_distance)
+					elif x_distance == 0:
+						if y_distance < 0:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, 0, location_A_postion_y, +1, copy_of_distance, x_distance, y_distance)
+						elif y_distance > 0:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, 0, location_A_postion_y, -1, copy_of_distance, x_distance, y_distance)
+					else:
+						if y_distance < 0:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, -1, location_A_postion_y, +1, copy_of_distance, x_distance, y_distance)
+						elif y_distance == 0:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, -1, location_A_postion_y, 0, copy_of_distance, x_distance, y_distance)
+						else:
+							location_A_postion_x, location_A_postion_y, copy_of_distance, x_distance, y_distance = self.move_to_next_road_part(location_A_postion_x, -1, location_A_postion_y, -1, copy_of_distance, x_distance, y_distance)
+					#print("Is this <= 0 in one loop?:", copy_of_distance)
+					#pause = input("Ready?")
 
 	def __repr__(self):
 		return self.type_of[0].upper() + self.type_of[1:] + " " + self.identity
@@ -106,9 +91,23 @@ class Possition:
 	def add_roads(self, road):
 		self.destinacions[road.identity] = road
 	
-	def add_road_parts(self, road_part):
-		self.destinacions[road_part.identity] = road_part
+	def add_road_parts(self, road_part, number_for_some_distance):
+		self.destinacions[number_for_some_distance] = road_part
 		self.distance += 1
+	
+	def move_to_next_road_part(self, given_postion_x, x_direction, given_postion_y, y_direction, the_given_distance, the_x_given_distance, the_y_given_distance):
+		returning_location_postion_x = given_postion_x + x_direction
+		returning_location_postion_y = given_postion_y + y_direction
+		self.add_road_parts(Possition("RP_"+str(the_given_distance), "road_part", [returning_location_postion_x, returning_location_postion_y]), the_given_distance)
+		#print(the_given_distance, "-", (abs(x_direction), "+", abs(y_direction)))
+		if the_given_distance > 0:
+			returning_copy_of_distance = the_given_distance - (abs(x_direction) + abs(y_direction))
+		else:
+			returning_copy_of_distance = the_given_distance + (abs(x_direction) + abs(y_direction))
+		#print(returning_copy_of_distance) 
+		returning_x_distance = the_x_given_distance + x_direction
+		returning_y_distance = the_y_given_distance + y_direction
+		return returning_location_postion_x, returning_location_postion_y, returning_copy_of_distance, returning_x_distance, returning_y_distance
 	
 	def get_path(self, location):
 		road_to_use = None
@@ -249,6 +248,10 @@ class The_map:
 	def remove_entity(self, entity):
 		entity.remove_from_any_position()
 		self.entities.remove(entity)
+		self.update_map()
+	
+	def reset_map(self):
+		self.entities = []
 		self.update_map()
 
 

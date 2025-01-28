@@ -4,7 +4,6 @@ from cf_classes import Card, Player
 from random import randint
 from cf_functions_2 import lets_move, npc_move, condition_for_endgame, end_game_message, team_balance_check
 from cf_classes_2 import Entity
-#from cf_list_dicts import A_map
 
 
 # here the game starts and ends if any player reaches 0 hp. *The start_turn function returns a bool that changes if the upper condition changes.
@@ -116,6 +115,7 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 	game_end = False
 	while game_end == False:
 		game_end = actuall_turn(players, teams, A_map, game_mode.previous_menu)
+	A_map.reset_map()
 	to_continue()
 
 

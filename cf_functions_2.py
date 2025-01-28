@@ -1,4 +1,3 @@
-#from cf_classes_2 import Entity
 from math import inf
 from heapq import heappop, heappush
 from random import randint

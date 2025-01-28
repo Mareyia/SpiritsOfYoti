@@ -1,47 +1,5 @@
 from cf_classes import Card, Menu_options, All_Menu
-from cf_classes_2 import Possition, Playing_grid, The_map
-
-
-A_map = The_map(Playing_grid(17, 18), "Test Map")
-
-#Maps available locations
-A_map.add_location(Possition("A", "location", [11, 6]))
-A_map.add_location(Possition("B", "location", [8, 12]))
-A_map.add_location(Possition("C", "location", [17, 18]))
-A_map.add_location(Possition("D", "location", [1, 14]))
-A_map.add_location(Possition("E", "location", [7, 3]))
-A_map.add_location(Possition("F", "location", [14, 10]))
-A_map.add_location(Possition("G", "location", [2, 17]))
-A_map.add_location(Possition("H", "location", [16, 2]))
-
-#Maps roads that conncets the map locations
-A_map.add_road(Possition("A", "road", [A_map.locations[0], A_map.locations[1]]))
-A_map.add_road(Possition("B", "road", [A_map.locations[2], A_map.locations[3]]))
-A_map.add_road(Possition("C", "road", [A_map.locations[0], A_map.locations[5]]))
-A_map.add_road(Possition("D", "road", [A_map.locations[1], A_map.locations[5]]))
-A_map.add_road(Possition("E", "road", [A_map.locations[4], A_map.locations[3]]))
-A_map.add_road(Possition("F", "road", [A_map.locations[4], A_map.locations[0]]))
-A_map.add_road(Possition("G", "road", [A_map.locations[2], A_map.locations[5]]))
-A_map.add_road(Possition("H", "road", [A_map.locations[3], A_map.locations[1]]))
-A_map.add_road(Possition("I", "road", [A_map.locations[2], A_map.locations[6]]))
-A_map.add_road(Possition("J", "road", [A_map.locations[1], A_map.locations[6]]))
-A_map.add_road(Possition("K", "road", [A_map.locations[7], A_map.locations[4]]))
-A_map.add_road(Possition("L", "road", [A_map.locations[7], A_map.locations[1]]))
-A_map.add_road(Possition("M", "road", [A_map.locations[7], A_map.locations[2]]))
-A_map.add_road(Possition("N", "road", [A_map.locations[7], A_map.locations[0]]))
-
-#Here I can edit where each player will begin inside the map using either random_starting_positions() for random position or manually using .starting_positions to pust specific positions for each players. example A_map.starting_positions[player_number] = location_position_in_list
-print("\nBefore randomizer\n")
-for starting_position in A_map.starting_positions:
-	print(starting_position, A_map.starting_positions[starting_position])
-A_map.random_starting_positions()
-print("\nAfter randomizer\n")
-for starting_position in A_map.starting_positions:
-	print(starting_position, A_map.starting_positions[starting_position])
-
-#position 0, 1 and 2 should be the easy, normal and hard map
-maps = [A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map, A_map]
-
+from cf_maps import maps
 
 #menu stracture
 main_menu = Menu_options("Main menu")
