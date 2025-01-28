@@ -116,7 +116,7 @@ def team_balance_check(given_answer, all_the_teams, number_of_player, all_the_pl
 			empty_teams[team] = all_the_teams[team]
 			#print(empty_teams[team])
 			#print(all_the_teams[team])
-	if len(empty_teams.keys()) == players_left:
+	if len(empty_teams.keys()) == players_left and given_answer not in list(empty_teams.keys()):
 		print("Can't do, some teams will be left empty")
 		the_continue_function(1)
 		print("Autofilling")

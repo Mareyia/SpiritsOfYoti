@@ -31,8 +31,8 @@ A_map.add_road(Possition("N", "road", [A_map.locations[7], A_map.locations[0]]))
 #Here I can edit where each player will begin inside the map using either random_starting_positions() for random position or manually using .starting_positions to pust specific positions for each players. example A_map.starting_positions[player_number] = location_position_in_list
 A_map.random_starting_positions()
 
-A_map.create_map()
-print(A_map)
+#A_map.create_map()
+#print(A_map)
 
 
 
@@ -64,8 +64,8 @@ for i in range(0, len(cimetrical.locations)):
 
 cimetrical.random_starting_positions()
 
-cimetrical.create_map()
-print(cimetrical)
+#cimetrical.create_map()
+#print(cimetrical)
 
 
 #position 0, 1 and 2 should be the easy, normal and hard map

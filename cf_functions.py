@@ -193,10 +193,10 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 						if empty_hand and choose_your_action != '1':
 							choose_your_action = '1'
 							print("Cannot attack with no cards\nAction {}.".format(action))
-						if len(adjecent_to_entity) == 0 and choose_your_action != '1':
+						if len(adjecent_enemies) == 0 and choose_your_action != '1':
 							choose_your_action = '1'
 							print("No enemies around to attack\nAction {}.".format(action))
-						if len(adjecent_to_entity) > 0 and choose_your_action != '1':
+						if len(adjecent_enemies) > 0 and choose_your_action != '1':
 							choose_your_action = input("{}\nYou are at {} (x={}, y={})\nAction {}. Do you want to move or attack? 1/2: ".format(all_player[one_player][0].player_name, all_player[one_player][1].position, all_player[one_player][1].position.location[0], all_player[one_player][1].position.location[1], action))
 							while choose_your_action not in ['1', '2']:
 								choose_your_action = input("Wrong input trty again: ")
@@ -210,12 +210,12 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 					if choose_your_action == '1':
 						lets_move(all_player[one_player][1], the_map_given)
 					else:
-						for i in range(1, len(adjecent_to_entity) + 1):
-							print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_to_entity[i - 1])][0].player_name, adjecent_to_entity[i - 1].position, adjecent_to_entity[i - 1].position.location)) 
+						for i in range(1, len(adjecent_enemies) + 1):
+							print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_enemies[i - 1])][0].player_name, adjecent_enemies[i - 1].position, adjecent_enemies[i - 1].position.location)) 
 						choose_your_enemy = input("Who do you want to attack?: ")
-						while choose_your_enemy not in [str(num_of_option) for num_of_option in range(1, len(adjecent_to_entity) + 1)]:
+						while choose_your_enemy not in [str(num_of_option) for num_of_option in range(1, len(adjecent_enemies) + 1)]:
 							 choose_your_enemy = input("Invalid option, try again: ")
-						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_to_entity[int(choose_your_enemy) - 1].character)][0])
+						start_turn(all_player[one_player][0], all_player["Player " + str(adjecent_enemies[int(choose_your_enemy) - 1].character)][0])
 				action += 1
 				
 				#Death check 2
