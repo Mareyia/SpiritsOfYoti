@@ -116,6 +116,12 @@ choosee a map function that sets limit for player count  COMPLETED
 
 
 1) Need to upgrade maps and use the distance ideas
+(Need to choose: two entities must be in the same location to fight or just adjecent? If they are in the samee location they can stuck and it wont make much sense if they are 5 entities on the same location but fighting only one in specific, on the other hand if they fight adjecent it wont make sense if they have a large distance in betwin and no moveement availbe.
+current state of game works with adjeceent entities.
+Possible solutions:
+	keep it the way it is
+	for adjecent can add range to attacks
+	for same location, give each location a fighting area )
 	upgrade the roads to be able to go diagonal COMPLETED
 		all moving cases:
 			1 x > and y > diagonal right-down
@@ -127,17 +133,23 @@ choosee a map function that sets limit for player count  COMPLETED
 			7 x < and y > diagonal right-up
 			8 x < and y == up
 			9 x < and y < diagonal left-up
-	now they can but not that efficient
+		now they can but not that efficient
 		example to go from x1 y1 to x2 y2 instead of going instantly in one move first it will move to x2 y1 then will take one more move
-	I want give functionality to the distance parameterm
+	I want give functionality to the distance parameterm COMPLETED
+		one location at time until there is no more available player movement		
 	distinquise in the map the only available roads
+		the total number of the road parts that is equal to its players movement should change symbol/shape
 2) Need to add more maps
+	obstucles
+	mines?
 3) Need to upgrade campaign, each difficulty should have multiple levels that each will:
 	increase enemy count
 	have more complete decks
+		add more cards and functionalities
 
 
 !After all that I will get back to the animations and ACSI art
+!Some time make NPCs smarter? or less random
 
 
 

@@ -69,9 +69,11 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 				player_names.append(players["Player " + str(player)][0].player_name)
 		
 		else:
-			how_many_teams = input("In how many teams the players are devided?: ")
-			while int(how_many_teams) < 2 or int(how_many_teams) > len(players_and_positions.keys()) or how_many_teams.isdigit() is False:
-				how_many_teams = input("Incorrect input, try again. In how many teams the players are devided? (type from 2 to {}): ".format(how_many_players))
+			how_many_teams = 2
+			if len(players_and_positions.keys()) > 2:
+				how_many_teams = input("In how many teams the players are devided?: ")
+				while int(how_many_teams) < 2 or int(how_many_teams) > len(players_and_positions.keys()) or how_many_teams.isdigit() is False:
+					how_many_teams = input("Incorrect input, try again. In how many teams the players are devided? (type from 3 to {}): ".format(how_many_players))
 
 			for i in range(1, int(how_many_teams) + 1):
 				teams[i] = []
@@ -120,9 +122,9 @@ def playGame(game_mode, difficulty_of_campaign=None, players_and_positions=None,
 
 
 def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
-	
 	the_alive_teams = condition_for_endgame(all_teams)
 	for one_player in all_player:
+		#all_player[one_player][1].reset_movement() #Reset movement here if the movement will get reseted every turn
 		print(all_player[one_player][1])
 		if len(the_alive_teams.keys()) == 1:
 			print(end_game_message(the_alive_teams, the_game_mode))
@@ -147,6 +149,7 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 				
 			#The two actions of each players turn
 			while action != 3:
+				all_player[one_player][1].reset_movement() #Reset movement here if the movement will get reseted every action
 				#find the adjecent entities for both npcs and players
 				adjecent_to_entity = []
 				adjecent_enemies = []
@@ -168,10 +171,13 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 					print("{} action {}: Choosing an action".format(all_player[one_player][0].player_name, action))
 					to_continue(3)
 					if len(adjecent_enemies) == 0:
-						if len(adjecent_positions) > 0:
+						while len(adjecent_positions) > 0 and all_player[one_player][1].movement >= min([all_player[one_player][1].position.get_path(destination).distance for destination in all_player[one_player][1].position.alailable_destinacions if destination.entity_ocupation == None]) and len(adjecent_enemies) == 0:
 							npc_move(all_player[one_player][1], the_map_given)
+							#need to stop the while loop if there is an adjent is found enemy before the movemnt is not enouf
+							adjecent_enemies = [destination.entity_ocupation for destination in all_player[one_player][1].position.alailable_destinacions if destination.entity_ocupation != None and destination.entity_ocupation.team != all_player[one_player][1].team]
+							
 							print(the_map_given)
-						else:
+						if len(adjecent_positions) == 0:
 							print("Nowere to move...")
 						to_continue(1)
 					elif len(adjecent_enemies) == 1:
@@ -187,6 +193,8 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 						available_options.append(str(i))
 					
 					choose_your_action = '0'
+					#if all_player[one_player][1].movement < min([destination for destination in all_player[one_player][1].position.alailable_destinacions if destination.entity_ocupation == None]):
+						
 					#if there are no locations available to move, it also means that you are surronded by entities
 					if len(available_options) > 0:
 						#if there are no enemies to attack means there are only location to go too and freendly entities adjecent to you
@@ -208,7 +216,10 @@ def actuall_turn(all_player, all_teams, the_map_given, the_game_mode):
 
 						 
 					if choose_your_action == '1':
-						lets_move(all_player[one_player][1], the_map_given)
+						continue_moving = True
+						while all_player[one_player][1].movement >= min([all_player[one_player][1].position.get_path(destination).distance for destination in all_player[one_player][1].position.alailable_destinacions if destination.entity_ocupation == None]) and continue_moving:
+							continue_moving = lets_move(all_player[one_player][1], the_map_given)
+						print("No movement left")
 					else:
 						for i in range(1, len(adjecent_enemies) + 1):
 							print("Type '{}' for {} in {} at {}".format(i, all_player["Player " + str(adjecent_enemies[i - 1])][0].player_name, adjecent_enemies[i - 1].position, adjecent_enemies[i - 1].position.location)) 

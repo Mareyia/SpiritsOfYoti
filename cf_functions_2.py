@@ -14,7 +14,7 @@ def lets_move(character, given_map):
 	counters = {}
 	counter = 0
 	for i in range(len(character.position.alailable_destinacions)):
-		if character.position.alailable_destinacions[i].entity_ocupation is not None:
+		if character.position.alailable_destinacions[i].entity_ocupation is not None or character.position.get_path(character.position.alailable_destinacions[i]).distance > character.movement:
 			continue
 		counters[str(counter)] = i
 		print("For {} using {} with {} length type '{}'".format(character.position.alailable_destinacions[i], character.position.get_path(character.position.alailable_destinacions[i]), character.position.get_path(character.position.alailable_destinacions[i]).distance, counter))
@@ -22,7 +22,19 @@ def lets_move(character, given_map):
 	where = input("Choose a destination: ")
 	while where not in counters.keys():
 		where = input("Wrong inputm, try again: ")
+	
+	previous_location = character.position
 	given_map.move_entity(character, character.position.alailable_destinacions[counters[where]])
+	character.change_movement(previous_location.get_path(character.position).distance, False, True)
+	print("Movement left:", character.movement)
+	
+	whant_to_continue_moving = input("Continue moving? (y/n): ")
+	while whant_to_continue_moving not in ['y', 'n']:
+		whant_to_continue_moving = input("Invalid input, try again. Continue moving? (y/n): ")
+	if whant_to_continue_moving == 'y':
+		return True 
+	else:
+		return False
 
 def heuristic(start, goal):
 	x_distance = abs(start.location[0] - goal.location[0])
@@ -64,7 +76,9 @@ def npc_move(npc_to_move, given_map):
 			reccomended_choice = path
 	print(reccomended_choice)
 	if reccomended_choice[1][1].entity_ocupation is None:
+		previous_location = npc_to_move.position
 		given_map.move_entity(npc_to_move, reccomended_choice[1][1])
+		npc_to_move.change_movement(previous_location.get_path(npc_to_move.position).distance, False, True)
 
 
 def Fight(attacking_entity, defending_entity):

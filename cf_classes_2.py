@@ -2,12 +2,16 @@ from random import randint
 
 #entity is a class represends either the player or the computer
 class Entity:
+	starting_movement = 10
 	def __init__(self, character, starting_position, team=0, npc=False):
 		self.character = character
 		self.position = starting_position
 		self.position.entity_ocupation = self
 		self.npc = npc
 		self.team = team
+		self.movement = self.starting_movement
+		#self.cooldown = 0 maybe better a dictionary of multiple parameters that changes in time at the same time
+		 
 	
 	def __repr__(self):
 		return self.character
@@ -20,6 +24,20 @@ class Entity:
 	def remove_from_any_position(self):
 		self.position.entity_ocupation = None
 		self.position = None
+	
+	def change_movement(self, ammount, increase=False, remove=False):
+		if increase:
+			self.movement += ammount
+		elif remove:
+			self.movement -= ammount
+		else:
+			self.movement = ammount
+	
+	def reset_movement(self):
+		self.movement = self.starting_movement
+	
+	def time_changer(self, time_given, changer_or_reeseter_method):
+		pass
 
 
 
